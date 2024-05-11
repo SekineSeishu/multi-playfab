@@ -10,6 +10,7 @@ public class PlayerManager : NetworkBehaviour
     private Vector3 _velocity;
     private bool _jumpPressed;
 
+    [SerializeField] private GameObject cameraPoint;
     private CharacterController _controller;
 
     public float PlayerSpeed = 0.5f;
@@ -56,7 +57,7 @@ public class PlayerManager : NetworkBehaviour
         if (HasStateAuthority)
         {
             Camera = Camera.main;
-            Camera.GetComponent<FirstPersonCamera>().Target = transform;
+            Camera.GetComponent<FirstPersonCamera>().Target = cameraPoint.transform;
         }
     }
     // Start is called before the first frame update
