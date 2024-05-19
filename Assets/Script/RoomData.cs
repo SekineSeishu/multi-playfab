@@ -12,7 +12,6 @@ public class RoomData : MonoBehaviour
     private TMP_Text playerCountText;
     [SerializeField]
     private TMP_Text nameText;
-
     public void SetData(string id, string playerCount,string name)
     {
         idText.text = id;

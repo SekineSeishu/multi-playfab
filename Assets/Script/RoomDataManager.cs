@@ -5,95 +5,106 @@ using UnityEngine.UI;
 using Fusion;
 using Fusion.Sockets;
 using System;
+using UnityEngine.SceneManagement;
 
 
 public class RoomDataManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner _runner;
     [SerializeField]
+    private GameObject RoomDataPrefab;
+    [SerializeField]
+    private GameObject CreateRoomDataPrefab;
+    [SerializeField]
     private List<GameObject> roomDataList;
+    [SerializeField]
+    private Button createButton;
+    [SerializeField]
+    private Button joinroomButton;
+
     public void OnConnectedToServer(NetworkRunner runner)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnSceneLoadStart(NetworkRunner runner)
     {
-        throw new NotImplementedException();
+        
     }
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
+        Debug.Log("OnSessionListUpdated called");
         for (int i = 0; i < sessionList.Count; i++)
         {
             var session = sessionList[i];
@@ -131,10 +142,54 @@ public class RoomDataManager : MonoBehaviour, INetworkRunnerCallbacks
             Debug.Log("JoinSessionLobby succeeded");
         }
     }
+    public async void CreateRoom(string roomname, int maxPlayers)
+    {
+        string roomName = roomname;
+        if (string.IsNullOrEmpty(roomName))
+        {
+            Debug.LogError("Room name cannot be empty");
+            return;
+        }
+
+        var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+        var sceneInfo = new NetworkSceneInfo();
+        if (scene.IsValid)
+        {
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        }
+
+        var startGameArgs = new StartGameArgs()
+        {
+            GameMode = GameMode.Host,
+            SessionName = roomName,
+            PlayerCount = maxPlayers,
+            Scene = scene,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+        };
+
+        var result = await _runner.StartGame(startGameArgs);
+        if (result.Ok)
+        {
+            Debug.Log($"Room '{roomName}' created successfully");
+        }
+        else
+        {
+            Debug.LogError($"Failed to create room: {result.ShutdownReason}");
+        }
+    }
     private void Launch(string sessionName)
     {
         Debug.Log($"Launching session: {sessionName}");
         // 実際のセッション開始処理をここに記述
+    }
+
+    public void CreateMenuOnClick()
+    {
+        CreateRoomDataPrefab.SetActive(true);
+    }
+    public void JoinMenuOnClick()
+    {
+        RoomDataPrefab.SetActive(true);
     }
     // Start is called before the first frame update
     void Start()
