@@ -6,15 +6,10 @@ using TMPro;
 
 public class RoomData : MonoBehaviour
 {
-    [SerializeField]
-    private TMP_Text idText;
-    [SerializeField]
-    private TMP_Text playerCountText;
-    [SerializeField]
-    private TMP_Text nameText;
+    public TMP_Text playerCountText;
+    public TMP_Text nameText;
     public void SetData(string id, string playerCount,string name)
     {
-        idText.text = id;
         playerCountText.text = playerCount;
         nameText.text = name;
     }
