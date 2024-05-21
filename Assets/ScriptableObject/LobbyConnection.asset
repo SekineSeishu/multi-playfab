@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3acaad2c4983684faaa3a8bd61ca9e6, type: 3}
   m_Name: LobbyConnection
   m_EditorClassIdentifier: 
-  Name: Shared Lobby
+  Name: Lobby
   ID: 0
   Target: 0
+  PrivateLobbyPass: 
   MaxClients: 20
   SceneIndex: 1

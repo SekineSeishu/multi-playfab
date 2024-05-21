@@ -18,6 +18,7 @@ namespace CustomConnectionHandler
         public ConnectionID ID;
         [Header("Used to treat different connections between Shared lobby or Host Dungeon")]
         public ConnectionTarget Target;
+        [SerializeField] public string PrivateLobbyPass;
         [Space]
         public int MaxClients = 20;
         public int SceneIndex;

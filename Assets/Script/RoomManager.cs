@@ -51,6 +51,8 @@ public class RoomManager : MonoBehaviour, INetworkRunnerCallbacks
             networkRunner = GetComponent<NetworkRunner>();
             networkRunner.name = "NetworkRunner";
 
+
+
             networkRunner.StartGame(new StartGameArgs
             {
                 GameMode = GameMode.Client,
@@ -60,9 +62,18 @@ public class RoomManager : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public void RefreshSessionList()
+    public async void RandomRoom()
     {
+        if (networkRunner == null)
+        {
+            networkRunner = GetComponent<NetworkRunner>();
+            networkRunner.name = "NetworkRunner";
 
+            await networkRunner.StartGame(new StartGameArgs()
+            {
+                GameMode = GameMode.AutoHostOrClient,
+            });
+        }
     }
 
     // Update is called once per frame

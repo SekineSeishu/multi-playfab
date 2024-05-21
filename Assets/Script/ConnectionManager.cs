@@ -38,6 +38,7 @@ namespace CustomConnectionHandler
             DontDestroyOnLoad(this);
         }
 
+
         public void LoadDungeonLevel()
         {
             if (!_dungeonConnection.IsRunning) return;
@@ -59,6 +60,7 @@ namespace CustomConnectionHandler
 
         public async Task ConnectToRunner(ConnectionData connectionData, Action<NetworkRunner> onInitialized = default, Action<ShutdownReason> onFailed = default)
         {
+            
             //Get correct connection reference.
             var connection = connectionData.Target == Lobby ? _lobbyConnection : _dungeonConnection;
             connection.ActiveConnection = connectionData;
@@ -106,13 +108,14 @@ namespace CustomConnectionHandler
 
             var startResult = await connection.Runner.StartGame(new StartGameArgs()
             {
+                CustomLobbyName = "Lobby" + connectionData.PrivateLobbyPass,
                 GameMode = gameMode,
                 SessionProperties = sessionProperties,
-                EnableClientSessionCreation = true,
+                EnableClientSessionCreation = false,
                 Scene = sceneInfo,
                 PlayerCount = connectionData.MaxClients,
                 OnGameStarted = onInitialized,
-                SceneManager = connection.Runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
+                SceneManager = connection.Runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
             });
 
             if (!startResult.Ok)
