@@ -34,8 +34,8 @@ public class HubOptionManager : MonoBehaviour
     }
     public void JoinLobby()
     {
-         _initialConnection.PrivateLobbyPass = setPasswordText.text;
-        _ = LobbyManager.Instance.JoinPrivateLobby(_initialConnection);
+         _initialConnection.PrivateLobbyPass = passwordText.text;
+        _ = LobbyManager.Instance.StartPrivateLobby(_initialConnection);
     }
     // Update is called once per frame
     void Update()

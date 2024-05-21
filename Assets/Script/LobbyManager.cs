@@ -10,9 +10,11 @@ public class LobbyManager : MonoBehaviour
 {
     public static LobbyManager Instance;
     [SerializeField]
-    private NetworkRunner _runner;
+    public NetworkRunner _runner;
     [SerializeField]
     private string lobbySceneName;
+    [SerializeField]
+    private GameObject playerPrefab;
 
     private void Awake()
     {
@@ -57,23 +59,6 @@ public class LobbyManager : MonoBehaviour
         else
         {
             Debug.LogError("Failed to start private lobby: " + startResult.ShutdownReason);
-        }
-    }
-
-    public async Task JoinPrivateLobby(ConnectionData connectionData)
-    {
-        var lobbyName = "Lobby" + connectionData.PrivateLobbyPass;
-        var joinResult = await _runner.JoinSessionLobby(SessionLobby.Shared,lobbyName);
-
-        GameManager.Instance.SetLobbyName(connectionData.PrivateLobbyPass);
-        if (joinResult.Ok)
-        {
-            Debug.Log("JoinSessionLobby succeeded");
-            _runner.GetComponent<NetworkSceneManager>().LoadScene(lobbySceneName, LoadSceneMode.Single);
-        }
-        else
-        {
-            Debug.LogError("Failed to join private lobby:" +  joinResult.ShutdownReason);
         }
     }
     // Start is called before the first frame update

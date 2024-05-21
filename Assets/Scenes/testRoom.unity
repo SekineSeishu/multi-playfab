@@ -456,6 +456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _runner: {fileID: 86209012}
   lobbySceneName: Lobby
+  playerPrefab: {fileID: 982171427792283742, guid: f31e18bde0da84647a775cbf985dab25, type: 3}
 --- !u!114 &86209014
 MonoBehaviour:
   m_ObjectHideFlags: 0
