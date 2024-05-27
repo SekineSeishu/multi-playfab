@@ -14,6 +14,7 @@ public class PlayfabLogin : MonoBehaviour
     [SerializeField] private GameObject nametext;
     [SerializeField] private GameObject Menu;
     [SerializeField] private GameObject LoginButton;
+    [SerializeField] private Player player;
 
     public void Login()
     {
@@ -23,6 +24,7 @@ public class PlayfabLogin : MonoBehaviour
 
     private void PlayFabAuthService_OnLoginSuccess(LoginResult success)
     {
+        Debug.Log("ログイン成功");
         //新規作成したかどうか
         if (success.NewlyCreated)
         {
@@ -37,14 +39,85 @@ public class PlayfabLogin : MonoBehaviour
             LoginButton.SetActive(false);
             Inventry.GetCatalogData("main");
             shop.GetCatalogData("main");
+            GetPlayerData(/*success.PlayFabId*/);
         }
     }
+
+    public void GetPlayerData(/*string playfabId*/)
+    {
+        /*PlayFabClientAPI.GetPlayerProfile(
+            new GetPlayerProfileRequest
+            {
+                PlayFabId = playfabId,
+                ProfileConstraints = new PlayerProfileViewConstraints
+                {
+                    ShowDisplayName = true
+                }
+            }, result =>
+            {
+                player._name = result.PlayerProfile.DisplayName;
+                Debug.Log("DisplayName:" + player.name);
+            },error =>
+            {
+                Debug.LogError(error.GenerateErrorReport());
+            });*/
+        PlayFabClientAPI.GetUserData(
+            new GetUserDataRequest
+            {
+                PlayFabId = playfabId
+            }, result =>
+            {
+                player._name = result.Data["Name"].Value;
+                var playerImage = PlayFabInventry.Instance.AllItems.Find(item => item.name == result.Data["Image"].Value);
+                if (playerImage == null)
+                {
+                    throw new System.IO.FileNotFoundException("見つかりませんでした");
+                }
+                player.icon = playerImage.icon;
+            }, error =>
+            {
+                Debug.LogError(error.GenerateErrorReport());
+            });
+    }
+
 
     //表示名の入力コントロール
     [SerializeField] TMP_InputField inputName;
     //完了ボタン
     [SerializeField] Button inputComp;
 
+    private void PlayerUpdateUserTitleDisplayName()
+    {
+        PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = inputName.text
+        }, result =>
+        {
+            Debug.Log("プレイヤー名:" + result.DisplayName);
+        }, error => Debug.LogError(error.GenerateErrorReport()));
+    }
+    private void PlayerUpdateUserData()
+    {
+        var request = new UpdateUserDataRequest()
+        {
+            Data = new Dictionary<string, string>
+            {
+                { "Name", inputName.text },
+            }
+        };
+
+        PlayFabClientAPI.UpdateUserData(request, OnSuccess, OnError);
+
+        void OnSuccess(UpdateUserDataResult result)
+        {
+            Debug.Log("Success");
+            GetPlayerData();
+        }
+        void OnError(PlayFabError error)
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        }
+    }
     public void InputValueChanged()
     {
         inputComp.interactable = IsValidName();
@@ -96,26 +169,51 @@ public class PlayfabLogin : MonoBehaviour
     }
     #endregion
 
+    private void PlayFabInitPlayer()
+    {
+        var request = new UpdateUserDataRequest()
+        {
+            Data = new Dictionary<string, string>
+            {
+                {"Exp","0" },
+                {"Rank","1" }
+            }
+        };
+
+        PlayFabClientAPI.UpdateUserData(request
+            , result =>
+            {
+                Debug.Log("プレイヤーの初期化完了");
+            }, error => Debug.LogError(error.GenerateErrorReport()));
+    }
+
+    private void InputComplete()
+    {
+        PlayFabInitPlayer();
+
+        PlayerUpdateUserTitleDisplayName();
+    }
+
+    private void OnEnable()
+    {
+        PlayFabAuthService.OnLoginSuccess += PlayFabAuthService_OnLoginSuccess;
+        PlayFabAuthService.OnPlayFabError += PlayFabAuthService_OnPlayFabError;
+    }
+
+    private void OnDisable()
+    {
+        PlayFabAuthService.OnLoginSuccess -= PlayFabAuthService_OnLoginSuccess;
+        PlayFabAuthService.OnPlayFabError -= PlayFabAuthService_OnPlayFabError;
+    }
+
+    private void PlayFabAuthService_OnPlayFabError(PlayFabError error)
+    {
+        Debug.Log("ログイン失敗");
+    }
     // Start is called before the first frame update
     void Start()
     {
-        nametext.SetActive(false);
-        /*var request = new LoginWithCustomIDRequest
-        {
-            CustomId = "sample-custom-id",
-            CreateAccount = true
-        };
-        PlayFabClientAPI.LoginWithCustomID(request,
-            result =>
-            {
-                Debug.Log("ログイン成功:" + result);
-                shop.GetCatalogData("main");
-                shop.GetStoreData("main", "gold_store");
-            },
-            error =>
-            {
-                Debug.Log("ログイン失敗:" + error);
-            });*/
+        
     }
 
     // Update is called once per frame

@@ -8,6 +8,7 @@ public class MenuButton : MonoBehaviour
     public GameObject Inventory;
     public GameObject Shop;
     public GameObject Gacha;
+    public GameObject machingMenu;
     public void OpenInventory()
     {
         Inventory.transform.localScale = new Vector3(1, 1, 1);
@@ -22,6 +23,11 @@ public class MenuButton : MonoBehaviour
     {
         Gacha.transform.localScale = new Vector3(1, 1, 1);
         nowPase = Gacha;
+    }
+    public void OpenMachiMenu()
+    {
+        machingMenu.transform.localScale = new Vector3(1, 1, 1);
+        nowPase = machingMenu;
     }
     public void Close()
     {

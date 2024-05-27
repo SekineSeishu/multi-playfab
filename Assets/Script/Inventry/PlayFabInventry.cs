@@ -10,7 +10,7 @@ public class PlayFabInventry : MonoBehaviour
 {
     public static PlayFabInventry Instance;
     public List<ItemInstance> userInventry;
-    public List<ScriptableObject>[] itemsToAdd;
+    public List<Item> AllItems;
     public List<CatalogItem> CatalogItems { get; private set; }
     private bool Inventorystop;
     public Inventry Inventory;
@@ -99,23 +99,23 @@ public class PlayFabInventry : MonoBehaviour
             }
         }
 
-    [MenuItem("Assets/Find")]
     public  void Find(string itemName,string itemDisplayName,string itemID,int itemCount,string Descriotion)
     {
+        var matchingItem = AllItems.Find(item => item.name == itemDisplayName);
         var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
         Debug.Log("t:" + itemName);
-        if (guids.Length == 0)
+        if (matchingItem == null)
         {
             throw new System.IO.FileNotFoundException("Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
         }
-        var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-        var obj = AssetDatabase.LoadAssetAtPath<Item>(path);
+        var obj = matchingItem;
 
         Debug.Log(obj.name);
         obj.ItemID = itemID;
         obj.name = itemDisplayName;
         obj.itemCounts = itemCount;
         obj.text = Descriotion;
+
         if (Inventorystop)
         {
             Debug.Log("in");

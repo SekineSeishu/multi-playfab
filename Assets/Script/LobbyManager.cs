@@ -14,7 +14,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField]
     private string lobbySceneName;
     [SerializeField]
-    private GameObject playerPrefab;
+    public GameObject playerPrefab;
 
     private void Awake()
     {
