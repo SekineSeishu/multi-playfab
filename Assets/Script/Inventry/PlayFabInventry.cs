@@ -102,7 +102,7 @@ public class PlayFabInventry : MonoBehaviour
     public  void Find(string itemName,string itemDisplayName,string itemID,int itemCount,string Descriotion)
     {
         var matchingItem = AllItems.Find(item => item.name == itemDisplayName);
-        var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
+        //var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
         Debug.Log("t:" + itemName);
         if (matchingItem == null)
         {

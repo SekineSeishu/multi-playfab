@@ -122,10 +122,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 
+  icon: {fileID: 0}
   _name: 
   _rank: 0
   _exp: 0
-  playerImage: {fileID: 0}
+  playerName: {fileID: 8321324723147182771}
+  playerImage: {fileID: 5604606388201304165}
 --- !u!114 &7265426269933629840
 MonoBehaviour:
   m_ObjectHideFlags: 0

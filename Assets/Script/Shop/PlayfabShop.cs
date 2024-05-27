@@ -9,6 +9,7 @@ using System.Linq;
 public class PlayfabShop : MonoBehaviour
 {
     public static PlayfabShop Instance;
+    public List<Item> AllItems;
     public List<CatalogItem> CatalogItems { get; private set; }
     public List<StoreItem> StoreItems { get; private set; }
 
@@ -81,14 +82,15 @@ public class PlayfabShop : MonoBehaviour
 
     public void ShopFind(string itemName,int price)
     {
-        var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
+        var matchingItem = AllItems.Find(item => item.name == itemName);
+        //var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
         Debug.Log("t:" + itemName);
-        if (guids.Length == 0)
+        if (matchingItem == null)
         {
             throw new System.IO.FileNotFoundException("Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
         }
-        var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-        var obj = AssetDatabase.LoadAssetAtPath<Item>(path);
+        //var path = AssetDatabase.GUIDToAssetPath(guids[0]);
+        var obj = matchingItem;
 
         Debug.Log(obj.name);
         obj.ItemID = itemName;

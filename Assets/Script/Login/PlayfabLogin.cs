@@ -64,7 +64,7 @@ public class PlayfabLogin : MonoBehaviour
         PlayFabClientAPI.GetUserData(
             new GetUserDataRequest
             {
-                PlayFabId = playfabId
+                //PlayFabId = playfabId
             }, result =>
             {
                 player._name = result.Data["Name"].Value;
