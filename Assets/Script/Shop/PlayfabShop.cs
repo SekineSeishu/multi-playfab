@@ -64,7 +64,7 @@ public class PlayfabShop : MonoBehaviour
                     string description = catalogItem.Description;
                     uint price = storeItem.VirtualCurrencyPrices["GD"];
 
-                    ShopFind(itemId, (int)price);
+                    //ShopFind(itemId,displayName, (int)price);
                 }
                 else
                 {
@@ -80,7 +80,7 @@ public class PlayfabShop : MonoBehaviour
         });
     }
 
-    public void ShopFind(string itemName,int price)
+    /*public void ShopFind(string itemId ,string itemName,int price)
     {
         var matchingItem = AllItems.Find(item => item.name == itemName);
         //var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
@@ -90,13 +90,13 @@ public class PlayfabShop : MonoBehaviour
             throw new System.IO.FileNotFoundException("Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
         }
         //var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-        var obj = matchingItem;
+        var obj = matchingItem as Item;
 
         Debug.Log(obj.name);
-        obj.ItemID = itemName;
+        obj.ItemID = itemId;
         obj.ShopItemPrice = price;
         shopItemGrop.Add(obj);
-    }
+    }*/
 
     public void PurchaseItem(string catalogVersion, string storeId, string itemId, string virtualCurrency, int price)
     {

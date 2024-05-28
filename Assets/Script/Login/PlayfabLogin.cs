@@ -15,6 +15,7 @@ public class PlayfabLogin : MonoBehaviour
     [SerializeField] private GameObject Menu;
     [SerializeField] private GameObject LoginButton;
     [SerializeField] private Player player;
+    [SerializeField] private UserProfielUI userUiI;
 
     public void Login()
     {
@@ -74,6 +75,7 @@ public class PlayfabLogin : MonoBehaviour
                     throw new System.IO.FileNotFoundException("見つかりませんでした");
                 }
                 player.icon = playerImage.icon;
+                userUiI.SetProfiel(player._name,player.icon);
             }, error =>
             {
                 Debug.LogError(error.GenerateErrorReport());
@@ -164,7 +166,7 @@ public class PlayfabLogin : MonoBehaviour
             , result =>
             {
                 Debug.Log("プレイヤーの初期化完了");
-                UpdateUserTitleDisplayName();
+                //UpdateUserTitleDisplayName();
             }, error => Debug.LogError(error.GenerateErrorReport()));
     }
     #endregion
@@ -194,7 +196,7 @@ public class PlayfabLogin : MonoBehaviour
         PlayerUpdateUserTitleDisplayName();
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         PlayFabAuthService.OnLoginSuccess += PlayFabAuthService_OnLoginSuccess;
         PlayFabAuthService.OnPlayFabError += PlayFabAuthService_OnPlayFabError;
@@ -209,7 +211,7 @@ public class PlayfabLogin : MonoBehaviour
     private void PlayFabAuthService_OnPlayFabError(PlayFabError error)
     {
         Debug.Log("ログイン失敗");
-    }
+    }*/
     // Start is called before the first frame update
     void Start()
     {
