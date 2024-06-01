@@ -6,6 +6,7 @@ using PlayFab.ClientModels;
 using PlayFab;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.PackageManager;
 
 public class PlayfabLogin : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class PlayfabLogin : MonoBehaviour
     [SerializeField] private GameObject Menu;
     [SerializeField] private GameObject LoginButton;
     [SerializeField] private Player player;
-    [SerializeField] private UserProfielUI userUiI;
+    [SerializeField] private UserProfielUI userUI;
+    [SerializeField] private string userRank;
+    [SerializeField] private string userExp;
 
     public void Login()
     {
@@ -40,6 +43,7 @@ public class PlayfabLogin : MonoBehaviour
             LoginButton.SetActive(false);
             Inventry.GetCatalogData("main");
             shop.GetCatalogData("main");
+            userUI.gameObject.SetActive(true);
             GetPlayerData(/*success.PlayFabId*/);
         }
     }
@@ -75,7 +79,10 @@ public class PlayfabLogin : MonoBehaviour
                     throw new System.IO.FileNotFoundException("見つかりませんでした");
                 }
                 player.icon = playerImage.icon;
-                userUiI.SetProfiel(player._name,player.icon);
+                userRank = result.Data["Rank"].Value;
+                userExp = result.Data["Exp"].Value;
+                userUI.gameObject.SetActive(true);
+                userUI.SetProfiel(player._name,player.icon);
             }, error =>
             {
                 Debug.LogError(error.GenerateErrorReport());
@@ -88,23 +95,34 @@ public class PlayfabLogin : MonoBehaviour
     //完了ボタン
     [SerializeField] Button inputComp;
 
-    private void PlayerUpdateUserTitleDisplayName()
+    public void PlayerUpdateUserTitleDisplayName(string name)
     {
+        if (string.IsNullOrEmpty(inputName.text))
+        {
+            Debug.LogError("入力された名前が空です。");
+            return;
+        }
         PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
         {
-            DisplayName = inputName.text
+            DisplayName = name
         }, result =>
         {
             Debug.Log("プレイヤー名:" + result.DisplayName);
-        }, error => Debug.LogError(error.GenerateErrorReport()));
+        }, error => Debug.LogError("プレイヤー名の設定エラー: " + error.GenerateErrorReport()));
     }
-    private void PlayerUpdateUserData()
+
+    public void PlayerNameUpdate()
+    {
+        nametext.SetActive(true);
+        InputValueChanged();
+    }
+    public void PlayerUpdateUserData(string name)
     {
         var request = new UpdateUserDataRequest()
         {
             Data = new Dictionary<string, string>
             {
-                { "Name", inputName.text },
+                { "Name", name },
             }
         };
 
@@ -141,11 +159,11 @@ public class PlayfabLogin : MonoBehaviour
         }, result =>
         {
             Debug.Log("プレイヤー名:" + result.DisplayName);
-            nametext.SetActive(false);
+            /*nametext.SetActive(false);
             Inventry.GetCatalogData("main");
             Menu.SetActive(true);
             LoginButton.SetActive(false);
-            shop.GetCatalogData("main");
+            shop.GetCatalogData("main");*/
         }, error => Debug.LogError(error.GenerateErrorReport()));
     }
     #endregion
@@ -157,8 +175,10 @@ public class PlayfabLogin : MonoBehaviour
         {
             Data = new Dictionary<string, string>
             {
-                {"Exp","0"},
-                {"Rank","1"}
+                {"Name", inputName.text},
+                {"Image","魔法使い" },
+                {"Exp",userExp},
+                {"Rank",userRank}
             }
         };
 
@@ -167,6 +187,13 @@ public class PlayfabLogin : MonoBehaviour
             {
                 Debug.Log("プレイヤーの初期化完了");
                 //UpdateUserTitleDisplayName();
+                nametext.SetActive(false);
+                Inventry.GetCatalogData("main");
+                Menu.SetActive(true);
+                LoginButton.SetActive(false);
+                shop.GetCatalogData("main");
+                userUI.gameObject.SetActive(true);
+                GetPlayerData(/*success.PlayFabId*/);
             }, error => Debug.LogError(error.GenerateErrorReport()));
     }
     #endregion
@@ -177,8 +204,10 @@ public class PlayfabLogin : MonoBehaviour
         {
             Data = new Dictionary<string, string>
             {
-                {"Exp","0" },
-                {"Rank","1" }
+                {"Exp","０" },
+                {"Rank","１" },
+                {"Name","" },
+                {"Image","魔法使い" },
             }
         };
 
@@ -186,14 +215,22 @@ public class PlayfabLogin : MonoBehaviour
             , result =>
             {
                 Debug.Log("プレイヤーの初期化完了");
+                nametext.SetActive(false);
+                Menu.SetActive(true);
+                LoginButton.SetActive(false);
+                Inventry.GetCatalogData("main");
+                shop.GetCatalogData("main");
+                userUI.gameObject.SetActive(true);
+                //GetPlayerData(/*success.PlayFabId*/);
+
+                PlayerUpdateUserData(inputName.text);
+                PlayerUpdateUserTitleDisplayName(inputName.text);
             }, error => Debug.LogError(error.GenerateErrorReport()));
     }
 
-    private void InputComplete()
+    public void InputComplete()
     {
         PlayFabInitPlayer();
-
-        PlayerUpdateUserTitleDisplayName();
     }
 
     /*private void OnEnable()

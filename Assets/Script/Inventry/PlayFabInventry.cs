@@ -5,6 +5,7 @@ using UnityEditor;
 using System.Linq;
 using PlayFab;
 using PlayFab.ClientModels;
+using TMPro;
 
 public class PlayFabInventry : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayFabInventry : MonoBehaviour
     public List<CatalogItem> CatalogItems { get; private set; }
     private bool Inventorystop;
     public Inventry Inventory;
+    [SerializeField] private TMP_Text coinText;
 
     public void Awake()
     {
@@ -72,6 +74,14 @@ public class PlayFabInventry : MonoBehaviour
                  }
                  GetItemDescription(item.ItemId,item.DisplayName,item.ItemInstanceId,itemCounts[itemId]);
             }
+             string currencyInfo = "\n";
+             foreach (var virtualCurrency in result.VirtualCurrency)
+             {
+                 Debug.Log($"仮想通貨{virtualCurrency.Key} : {virtualCurrency.Value}");
+                 currencyInfo = $"{virtualCurrency.Key}: {virtualCurrency.Value}\n";
+             }
+                 coinText.text = currencyInfo;
+
          }, error =>
          {
              Debug.LogError($"インベントリの情報の取得に失敗");
