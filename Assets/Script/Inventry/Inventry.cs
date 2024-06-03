@@ -17,22 +17,22 @@ public class Inventry : MonoBehaviour
     void Start()
     {
         inventryUI = GetComponent<InventryUI>();
-        inventryUI.UpdateUI();
+        //inventryUI.UpdateUI();
     }
 
     public List<Item> items = new List<Item>();
 
-    public void Add(Item item)
+    public void Add(List<Item> item)
     {
         Debug.Log("Add");
-        items.Add(item);
-        inventryUI.UpdateUI();
+        items = item; 
+        inventryUI.UpdateUI(items);
     }
 
     public void Remove(Item item)
     {
         items.Remove(item);
-        inventryUI.UpdateUI();
+        inventryUI.UpdateUI(items);
     }
 
     public void AllClear()

@@ -12,6 +12,8 @@ public class Item : ScriptableObject
     public static Item Instance;
     //キャンバス
     public GameObject ItemdataUI;
+    //ショップキャンバス
+    public GameObject ShopItemdataUI;
     //アイテム名
     new public string name = "New Item";
     //アイテム説明
@@ -50,14 +52,29 @@ public class Item : ScriptableObject
         Debug.Log(name + "を使用しました");
     }
 
+    public void SetSkin()
+    {
+
+    }
+
     public void see()
     {
         GameObject data = Instantiate(ItemdataUI);
-        //data.transform.parent = ItemdataUI.transform;
         ItemData itemData = data.GetComponent<ItemData>();
         itemData.name = name;
         itemData.text = text;
         itemData.icon = icon;
+    }
+
+    public void shopItemSee()
+    {
+        GameObject data = Instantiate(ShopItemdataUI);
+        ItemData itemData = data.GetComponent<ItemData>();
+        itemData.ItemID = ItemID;
+        itemData.name = name;
+        itemData.text = text;
+        itemData.icon = icon;
+        itemData.ShopItemPrice = ShopItemPrice;
     }
     // Start is called before the first frame update
     void Start()

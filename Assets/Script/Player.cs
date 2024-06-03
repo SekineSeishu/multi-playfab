@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
     public string id;
     public Sprite icon;
     public string _name;
-    public int _rank;
-    public float _exp;
+    public string _rank;
+    public string _exp;
     [SerializeField] private TMP_Text playerName;
     [SerializeField] private Image playerImage;
     // Start is called before the first frame update

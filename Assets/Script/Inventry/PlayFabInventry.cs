@@ -10,10 +10,12 @@ using TMPro;
 public class PlayFabInventry : MonoBehaviour
 {
     public static PlayFabInventry Instance;
-    public List<ItemInstance> userInventry;
+    public List<Item> userInventry = new List<Item>();
     public List<Item> AllItems;
     public List<CatalogItem> CatalogItems { get; private set; }
-    private bool Inventorystop;
+    private int Inventorycount = 0;
+    private int nowInventoryCount = 0;
+    private string nowItem;
     public Inventry Inventory;
     [SerializeField] private TMP_Text coinText;
 
@@ -26,7 +28,7 @@ public class PlayFabInventry : MonoBehaviour
     }
     void Start()
     {
-        Inventorystop = true;
+        
     }
 
     public void GetCatalogData(string catalogVersion)
@@ -57,6 +59,7 @@ public class PlayFabInventry : MonoBehaviour
         }, result =>
          {
              Debug.Log($"インベントリの情報の取得に成功 : インベントリに入っているアイテム数 {result.Inventory.Count}個");
+             Inventorycount = result.Inventory.Count;
              Dictionary<string, int> itemCounts = new Dictionary<string, int>();
              foreach (ItemInstance item in result.Inventory)
              {
@@ -70,7 +73,6 @@ public class PlayFabInventry : MonoBehaviour
                  else
                  {
                      itemCounts[itemId] = 1;
-                     Inventorystop = true;
                  }
                  GetItemDescription(item.ItemId,item.DisplayName,item.ItemInstanceId,itemCounts[itemId]);
             }
@@ -119,19 +121,26 @@ public class PlayFabInventry : MonoBehaviour
             throw new System.IO.FileNotFoundException("見つかりませんでした");
         }
         var obj = matchingItem;
-
         Debug.Log(obj.name);
         obj.ItemID = itemID;
         obj.name = itemDisplayName;
         obj.itemCounts = itemCount;
         obj.text = Descriotion;
 
-        if (Inventorystop)
+        userInventry.Add(obj);
+        nowInventoryCount++;
+
+        if (nowInventoryCount == Inventorycount)
         {
-            Debug.Log("in");
-            Inventory.Add(obj);
-            Inventorystop = false;
+            Inventory.Add(userInventry);
         }
+        /*if (obj.name != nowItem)
+        {
+            Debug.Log("itemcoun:" + obj.itemCounts);
+            Debug.Log(nowItem);
+            Inventory.Add(obj);
+            nowItem = obj.name;
+        }*/
     }
 
     public void ConSumeItem(string ID)

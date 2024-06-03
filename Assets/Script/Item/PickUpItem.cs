@@ -18,7 +18,8 @@ public class PickUpItem : MonoBehaviour
     //インベントリにアイテム追加
     public void PickUp()
     {
-        Inventry.instance.Add(item);
+        Debug.LogError("im");
+        //Inventry.instance.Add(item);
         //Destroy(gameObject);
     }
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour
 {
     public Image icon;
-    Item item;
+    public Item item;
 
     //アイテム追加
     public void AddItem(Item newItem)
@@ -34,11 +34,11 @@ public class Slot : MonoBehaviour
     public void UseItem()
     {
         item.see();
-        /*if (item == null)
-        {
-            return;
-        }
-        item.buy();*/
+    }
+    //ショップアイテムを見る
+    public void ShopUseItem()
+    {
+        item.shopItemSee();
     }
     // Start is called before the first frame update
     void Start()

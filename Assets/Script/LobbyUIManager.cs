@@ -6,7 +6,7 @@ using Fusion;
 
 public class LobbyUIManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> LobbyPosition;
+    [SerializeField] private List<Transform> LobbyPosition;
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private Player player;
     public int joinPlayerCount { get; private set; } = 0;
@@ -16,8 +16,8 @@ public class LobbyUIManager : MonoBehaviour
         if (lobbyNameText != null)
         {
             lobbyNameText.text = "Lobby Name:" + lobbyName;
-            GameObject obj = Instantiate(playerPrefab, LobbyPosition[joinPlayerCount].transform.position, Quaternion.identity);
-            obj.transform.parent = gameObject.transform;
+            GameObject obj = Instantiate(playerPrefab, LobbyPosition[joinPlayerCount]);
+            //obj.transform.parent = gameObject.transform;
             joinPlayerCount++;
         }
     }

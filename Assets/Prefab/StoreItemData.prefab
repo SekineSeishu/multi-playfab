@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1400463528383061594}
   - component: {fileID: 2466229754409722786}
   m_Layer: 5
-  m_Name: ItemData
+  m_Name: StoreItemData
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   player: {fileID: -3563949787038913796, guid: acf5c0f27ed812141bc94ca6e84a47bf, type: 3}
   dataName: {fileID: 1130727944003622480}
   dataText: {fileID: 493139743150546904}
-  setSkinText: {fileID: 8842321908985674444}
+  setSkinText: {fileID: 0}
   Icon: {fileID: 7530412629179229818}
   UI: {fileID: 27306149011240395}
 --- !u!223 &3847724281914041301
@@ -250,7 +250,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: -8227801898583368326}
         m_TargetAssemblyTypeName: ItemData, Assembly-CSharp
-        m_MethodName: SetSkin
+        m_MethodName: buy
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -325,7 +325,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30B9\u30AD\u30F3\u8A2D\u5B9A"
+  m_text: "\u8CFC\u5165"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: acdf7ad9b306cee49851ed1c68e99792, type: 2}
   m_sharedMaterial: {fileID: -1446293831158968586, guid: acdf7ad9b306cee49851ed1c68e99792, type: 2}
@@ -1043,7 +1043,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1230026180895862697
 RectTransform:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8691231395294767338}
   - component: {fileID: 3737219547655141072}
   m_Layer: 5
-  m_Name: Slot
+  m_Name: ShopSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3737219547655141072}
         m_TargetAssemblyTypeName: Slot, Assembly-CSharp
-        m_MethodName: UseItem
+        m_MethodName: ShopUseItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

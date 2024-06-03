@@ -10,10 +10,14 @@ public class PlayfabShop : MonoBehaviour
 {
     public static PlayfabShop Instance;
     public List<Item> AllItems;
+    public List<Item> GetShopItems = new List<Item>();
     public List<CatalogItem> CatalogItems { get; private set; }
     public List<StoreItem> StoreItems { get; private set; }
 
-    public ShopInventory shopItemGrop;
+    public Inventry shopItemGrop;
+
+    private int allItemCount = 0;
+    private int nowItemCount = 0;
 
     public void Awake()
     {
@@ -51,8 +55,10 @@ public class PlayfabShop : MonoBehaviour
         }
         , result =>
         {
-            Debug.Log("ストアデータ取得成功");
+            Debug.Log("ストアデータ取得成功" + result.Store.Count);
+            
             StoreItems = result.Store;
+
 
             foreach (var storeItem in StoreItems)
             {
@@ -64,7 +70,8 @@ public class PlayfabShop : MonoBehaviour
                     string description = catalogItem.Description;
                     uint price = storeItem.VirtualCurrencyPrices["GD"];
 
-                    //ShopFind(itemId,displayName, (int)price);
+                    allItemCount = result.Store.Count;
+                    ShopFind(itemId,displayName, (int)price);
                 }
                 else
                 {
@@ -80,7 +87,7 @@ public class PlayfabShop : MonoBehaviour
         });
     }
 
-    /*public void ShopFind(string itemId ,string itemName,int price)
+    public void ShopFind(string itemId ,string itemName,int price)
     {
         var matchingItem = AllItems.Find(item => item.name == itemName);
         //var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
@@ -94,9 +101,21 @@ public class PlayfabShop : MonoBehaviour
 
         Debug.Log(obj.name);
         obj.ItemID = itemId;
+        obj.name = itemName;
         obj.ShopItemPrice = price;
-        shopItemGrop.Add(obj);
-    }*/
+
+        var shopItem = PlayFabInventry.Instance.userInventry.Find(item => item.name == itemName);
+        if (shopItem == null)
+        {
+            GetShopItems.Add(obj);
+            nowItemCount++;
+            allItemCount--;
+        }
+        if (nowItemCount == allItemCount)
+        {
+            shopItemGrop.Add(GetShopItems);
+        }
+    }
 
     public void PurchaseItem(string catalogVersion, string storeId, string itemId, string virtualCurrency, int price)
     {

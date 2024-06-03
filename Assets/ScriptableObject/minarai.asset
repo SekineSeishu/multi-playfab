@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: minarai
   m_EditorClassIdentifier: 
   ItemdataUI: {fileID: 27306149011240395, guid: 06754f2be486b35499e8081d8cd710f3, type: 3}
+  ShopItemdataUI: {fileID: 27306149011240395, guid: 884bbcf83f45eea41b89ef162ccfe049, type: 3}
   name: "\u898B\u7FD2\u3044\u9B54\u6CD5\u4F7F\u3044"
-  text: 
-  icon: {fileID: 21300000, guid: 0277a024202ee94428f3fe5078f4ae48, type: 3}
-  ItemID: minarai
+  text: "\u30FB\uFF13\n\u30FB"
+  icon: {fileID: 21300000, guid: 877b25462eba525429c3d567de875b0d, type: 3}
+  ItemID: 5BA5A40C1399B96C
   itemCounts: 1
   ShopItemPrice: 100
