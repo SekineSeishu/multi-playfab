@@ -107,9 +107,9 @@ public class PlayfabShop : MonoBehaviour
         var shopItem = PlayFabInventry.Instance.userInventry.Find(item => item.name == itemName);
         if (shopItem == null)
         {
+            Debug.Log(obj.name);
             GetShopItems.Add(obj);
             nowItemCount++;
-            allItemCount--;
         }
         if (nowItemCount == allItemCount)
         {
