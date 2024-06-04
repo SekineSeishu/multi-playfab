@@ -16,7 +16,7 @@ public class PlayFabInventry : MonoBehaviour
     private int Inventorycount = 0;
     private int nowInventoryCount = 0;
     private string nowItem;
-    public Inventry Inventory;
+    public Inventory Inventory;
     [SerializeField] private TMP_Text coinText;
 
     public void Awake()
@@ -115,8 +115,8 @@ public class PlayFabInventry : MonoBehaviour
 
     public  void Find(string itemName,string itemDisplayName,string itemID,int itemCount,string Descriotion)
     {
+        //AllItems‚Ì’†‚©‚çˆê’v‚·‚é‚à‚Ì‚ð’T‚·
         var matchingItem = AllItems.Find(item => item.name == itemDisplayName);
-        //var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
         Debug.Log("t:" + itemName);
         if (matchingItem == null)
         {
@@ -138,13 +138,6 @@ public class PlayFabInventry : MonoBehaviour
             Debug.Log("a");
             Inventory.Add(userInventry);
         }
-        /*if (obj.name != nowItem)
-        {
-            Debug.Log("itemcoun:" + obj.itemCounts);
-            Debug.Log(nowItem);
-            Inventory.Add(obj);
-            nowItem = obj.name;
-        }*/
     }
 
     public void ConSumeItem(string ID)
