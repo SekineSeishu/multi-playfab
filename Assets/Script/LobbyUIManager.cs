@@ -6,22 +6,30 @@ using Fusion;
 
 public class LobbyUIManager : MonoBehaviour
 {
+    public static LobbyUIManager Instance;
     [SerializeField] public List<NetworkObject> playerList;
-    [SerializeField] private List<Transform> LobbyPosition;
+    [SerializeField] public List<Transform> LobbyPosition;
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private NetworkObject player;
     [SerializeField] private LobbyState lobbyState;
     [SerializeField] private TMP_Text playerCountText;
     private int playerCount;
 
-    public void SetLobby(string lobbyName,GameObject playerPrefab,NetworkRunner runner)
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+        public void SetLobby(string lobbyName,GameObject playerPrefab,NetworkRunner runner)
     {
         if (lobbyNameText != null && playerPrefab != null)
         {
             lobbyNameText.text = "Lobby Name:" + lobbyName;
-            NetworkObject player = runner.Spawn(playerPrefab, LobbyPosition[playerCount].position, Quaternion.identity, runner.LocalPlayer);
-            player.transform.parent = LobbyPosition[playerCount];
-            playerList.Add(player);
+            //NetworkObject player = runner.Spawn(playerPrefab, LobbyPosition[playerCount].position, Quaternion.identity, runner.LocalPlayer);
+            //player.transform.parent = LobbyPosition[playerCount];
+            //playerList.Add(player);
         }
     }
 

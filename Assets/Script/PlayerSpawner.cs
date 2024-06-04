@@ -3,15 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class PlayerSpawner : SimulationBehaviour,IPlayerJoined
+public class PlayerSpawner : SimulationBehaviour
 {
+    public static PlayerSpawner Instance;
+
+    [Networked]
+    private Vector3 LocalPosition { get; set; }
+    [SerializeField]
+    public List<NetworkObject> playerList;
+    [SerializeField]
+    public List<Transform> playerSpawnPositionList;
     public GameObject PlayerPrefab;
 
-    public void PlayerJoined(PlayerRef player)
+    private void Awake()
     {
-        if (player == Runner.LocalPlayer)
+        if (Instance == null)
         {
-            Runner.Spawn(PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            Instance = this;
         }
+        else if (Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+
+        DontDestroyOnLoad(this);
+    }
+    public void PlayerJoined(NetworkRunner Runner)
+    {
+        Debug.LogError("aaa");
+        playerSpawnPositionList = LobbyUIManager.Instance.LobbyPosition;
+        NetworkObject playerObject = Runner.Spawn(PlayerPrefab, playerSpawnPositionList[Runner.SessionInfo.PlayerCount].position, Quaternion.identity);
+        playerObject.transform.SetParent(playerSpawnPositionList[Runner.SessionInfo.PlayerCount]);
+        LocalPosition = playerObject.transform.localPosition;
+        playerList.Add(playerObject);
     }
 }

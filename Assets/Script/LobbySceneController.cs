@@ -7,26 +7,33 @@ using UnityEngine.SceneManagement;
 public class LobbySceneController : MonoBehaviour
 {
     [SerializeField] private LobbyUIManager lobbyUIManager;
-    private GameObject player;
+    private GameObject playerPrefab;
     private NetworkRunner runner;
     private string lobbyName;
     [SerializeField] private string homeSceneName = "";
     [SerializeField] private GameObject backHomeUI;
     [SerializeField] private LobbyState lobbyState;
+    public bool spaw;
     // Start is called before the first frame update
     void Start()
     {
         if (GameManager.Instance != null)
         {
+            spaw = true;
             lobbyName = GameManager.Instance.CurrentLobbyName;
-            player = LobbyManager.Instance.playerPrefab;
+            playerPrefab = LobbyManager.Instance.playerPrefab;
             runner = LobbyManager.Instance._runner;
             OnPlayerJoined(runner);
-            lobbyUIManager.SetLobby(lobbyName, player, runner);
+            lobbyUIManager.SetLobby(lobbyName, playerPrefab, runner);
         }
     }
-    private void OnPlayerJoined(NetworkRunner runner)
+    public void OnPlayerJoined(NetworkRunner runner)
     {
+        if (spaw)
+        {
+            Debug.LogError("aaa");
+            PlayerSpawner.Instance.PlayerJoined(runner);
+        }
         // プレイヤー数を更新
         lobbyUIManager.UpdatePlayerCount(runner.SessionInfo.PlayerCount);
     }

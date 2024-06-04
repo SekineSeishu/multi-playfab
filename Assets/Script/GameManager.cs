@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance {  get; private set; }
 
+    public bool OnLogin = true;
     [SerializeField]
     public string CurrentLobbyName { get; private set; }
 
