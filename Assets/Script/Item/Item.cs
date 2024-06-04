@@ -36,27 +36,25 @@ public class Item : ScriptableObject
     
     }
 
+    //アイテム購入
     public void buy()
     {
         PlayfabShop.Instance.PurchaseItem("main", "gold_store", ItemID, "GD", (int)ShopItemPrice);
     }
 
+    //アイテム使用
     public void Use()
     {
         itemCounts--;
         PlayFabInventry.Instance.ConSumeItem(ItemID);
         if (itemCounts == 0)
         {
-            Inventry.instance.Remove(this);
+            Inventory.instance.Remove(this);
         }
         Debug.Log(name + "を使用しました");
     }
 
-    public void SetSkin()
-    {
-
-    }
-
+    //アイテム詳細を見る
     public void see()
     {
         GameObject data = Instantiate(ItemdataUI);
@@ -66,6 +64,7 @@ public class Item : ScriptableObject
         itemData.icon = icon;
     }
 
+    //ショップアイテムの詳細を見る
     public void shopItemSee()
     {
         GameObject data = Instantiate(ShopItemdataUI);
@@ -75,16 +74,5 @@ public class Item : ScriptableObject
         itemData.text = text;
         itemData.icon = icon;
         itemData.ShopItemPrice = ShopItemPrice;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
