@@ -53,6 +53,8 @@ public class PlayFabInventry : MonoBehaviour
     public void GetUserInventory()
     {
         Inventory.AllClear();
+        userInventry.Clear();
+        nowInventoryCount = 0;
         var userInventoryRequest = new GetUserInventoryRequest();
         PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest
         {
@@ -129,9 +131,11 @@ public class PlayFabInventry : MonoBehaviour
 
         userInventry.Add(obj);
         nowInventoryCount++;
+        Debug.Log("åªç›ÇÃêî:" + nowInventoryCount);
 
         if (nowInventoryCount == Inventorycount)
         {
+            Debug.Log("a");
             Inventory.Add(userInventry);
         }
         /*if (obj.name != nowItem)

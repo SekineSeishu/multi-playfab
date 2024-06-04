@@ -10,6 +10,7 @@ public class LobbySceneController : MonoBehaviour
     private GameObject player;
     [SerializeField] private string homeSceneName = "";
     [SerializeField] private GameObject backHomeUI;
+    [SerializeField] private LobbyState lobbyState;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,12 +19,15 @@ public class LobbySceneController : MonoBehaviour
             string lobbyName = GameManager.Instance.CurrentLobbyName;
             player = LobbyManager.Instance.playerPrefab;
             NetworkRunner runner = LobbyManager.Instance._runner;
-            lobbyUIManager.SetLobby(lobbyName, player);
-            //Vector3 spawnPosition = new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
-            //runner.Spawn(player, spawnPosition, Quaternion.identity, runner.LocalPlayer);
+            OnPlayerJoined(runner);
+            lobbyUIManager.SetLobby(lobbyName, player, runner);
         }
     }
-
+    private void OnPlayerJoined(NetworkRunner runner)
+    {
+        // プレイヤー数を更新
+        lobbyUIManager.UpdatePlayerCount(runner.SessionInfo.PlayerCount);
+    }
     public void BackHomeMenu()
     {
         backHomeUI.SetActive(true);

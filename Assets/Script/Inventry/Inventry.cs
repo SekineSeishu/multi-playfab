@@ -37,7 +37,9 @@ public class Inventry : MonoBehaviour
 
     public void AllClear()
     {
+        Debug.Log("aiueo");
         items.Clear();
+        inventryUI.UpdateUI(items);
     }
 
     // Update is called once per frame

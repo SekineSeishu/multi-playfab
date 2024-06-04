@@ -47,7 +47,7 @@ public class LobbyManager : MonoBehaviour
             GameMode = GameMode.Shared,
             SessionProperties = null,
             Scene = sceneInfo,
-            PlayerCount = 20,
+            PlayerCount = 4,
             SceneManager = _runner.GetComponent<INetworkSceneManager>()
         });
 

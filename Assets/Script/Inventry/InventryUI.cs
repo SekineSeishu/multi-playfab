@@ -10,11 +10,13 @@ public class InventryUI : MonoBehaviour
 
     public Slot[] slots;
 
-    public GameObject Itemslot;
+    [SerializeField] private GameObject Itemslot;
 
-    public List<Transform> slotsPosition;
+    [SerializeField] private List<Transform> firstSlotsPosition;
 
-    public GameObject slotPositionPrefab;
+    [SerializeField]private List<Transform> slotsPosition;
+
+    [SerializeField] private GameObject slotPositionPrefab;
 
     public int slotr = 0;
 
@@ -22,29 +24,13 @@ public class InventryUI : MonoBehaviour
     void Start()
     {
         slots = InventryPanel.GetComponentsInChildren<Slot>();
+        firstSlotsPosition = slotsPosition;
     }
 
     // Update is called once per frame
     public void UpdateUI(List<Item> items)
     {
-        //Debug.Log("UpdateUI");
-        /*for (int i = 0; i < slots.Length; i++)
-        {
-            if (i < Inventry.instance.items.Count)
-            {
-                slots[i].AddItem(Inventry.instance.items[i]);
-            }
-            else
-            {
-                slots[i].ClearItem();
-            }
-        }*/
-
-        /*foreach (Transform child in slotPanel)
-        {
-            Destroy(child.gameObject);
-        }*/
-
+        ClearInventory();
         Debug.Log("UpdateUI");
         foreach (var item in items)
         {
@@ -63,6 +49,21 @@ public class InventryUI : MonoBehaviour
         var newslot = Instantiate(slotPositionPrefab, newPosition, Quaternion.identity);
         newslot.transform.SetParent(InventryPanel, false);
         slotsPosition.Add(newslot.transform);
+    }
+
+    private void ClearInventory()
+    {
+        // slotsPosition の各位置の子オブジェクトを削除
+        foreach (var slotPos in slotsPosition)
+        {
+            foreach (Transform child in slotPos)
+            {
+                Destroy(child.gameObject);
+                slotr = 0;
+                slotsPosition.Clear();
+                slotsPosition.AddRange(firstSlotsPosition);
+            }
+        }
     }
 
 }

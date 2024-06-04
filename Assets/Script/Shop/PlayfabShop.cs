@@ -131,7 +131,7 @@ public class PlayfabShop : MonoBehaviour
         {
             Debug.Log($"{purchaseResult.Items[0].DisplayName}w“ü¬Œ÷I");
             PlayFabInventry.Instance.GetUserInventory();
-            ShopInventory.instance.AllClear();
+            shopItemGrop.AllClear();
             GetCatalogData("main");
         }, error =>
         {
