@@ -6,6 +6,7 @@ using Fusion;
 
 public class LobbyUIManager : MonoBehaviour
 {
+    [SerializeField] public List<NetworkObject> playerList;
     [SerializeField] private List<Transform> LobbyPosition;
     [SerializeField] private TMP_Text lobbyNameText;
     [SerializeField] private NetworkObject player;
@@ -18,10 +19,9 @@ public class LobbyUIManager : MonoBehaviour
         if (lobbyNameText != null && playerPrefab != null)
         {
             lobbyNameText.text = "Lobby Name:" + lobbyName;
-            player = runner.Spawn(playerPrefab, LobbyPosition[playerCount].position, Quaternion.identity, runner.LocalPlayer);
+            NetworkObject player = runner.Spawn(playerPrefab, LobbyPosition[playerCount].position, Quaternion.identity, runner.LocalPlayer);
             player.transform.parent = LobbyPosition[playerCount];
-            //GameObject obj = Instantiate(playerPrefab, LobbyPosition[lobbyState.JoinPlayerCount].transform.position,Quaternion.identity);
-            //_.transform.parent = LobbyPosition[lobbyState.JoinPlayerCount];
+            playerList.Add(player);
         }
     }
 
@@ -33,6 +33,17 @@ public class LobbyUIManager : MonoBehaviour
             playerCount = count;
         }
     }
+
+    public void UpdateLobby()
+    {
+        for (int i = 1; i < playerCount; i++)
+        {
+            playerList[i].transform.parent = null;
+            playerList[i].transform.position = LobbyPosition[i].position;
+            playerList[i].transform.parent = LobbyPosition[playerCount];
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {

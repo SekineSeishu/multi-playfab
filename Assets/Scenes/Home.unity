@@ -4563,6 +4563,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f5bb5477eec3b324dbd3930a5e297d8b, type: 2}
   - {fileID: 11400000, guid: 32dfc1290a86d134aa42abfa821438c2, type: 2}
   - {fileID: 11400000, guid: d26420f98e2671f4eb05c34f754c0185, type: 2}
+  - {fileID: 11400000, guid: 2ff1e6a5a4e8245478968ee054d61266, type: 2}
   Inventory: {fileID: 1603283669}
   coinText: {fileID: 762535465}
 --- !u!1 &1331555964
@@ -4601,7 +4602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1767272.4, y: 0.00006647788}
+  m_AnchoredPosition: {x: -2212852.5, y: 0.000011396441}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1388141048
@@ -4999,7 +5000,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1710988.6, y: 0.00006647788}
+  m_AnchoredPosition: {x: -2157992.2, y: 0.000011396441}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1444193058
@@ -7409,6 +7410,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 32dfc1290a86d134aa42abfa821438c2, type: 2}
   - {fileID: 11400000, guid: f5bb5477eec3b324dbd3930a5e297d8b, type: 2}
   - {fileID: 11400000, guid: d26420f98e2671f4eb05c34f754c0185, type: 2}
+  - {fileID: 11400000, guid: 2ff1e6a5a4e8245478968ee054d61266, type: 2}
   GetShopItems: []
   shopItemGrop: {fileID: 1946693843}
 --- !u!114 &1946693842
