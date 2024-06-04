@@ -10,11 +10,9 @@ using UnityEngine.UI;
 public class PlayfabLogin : MonoBehaviour
 {
     public static PlayfabLogin Instance;
-    [SerializeField] private GameObject LogionButton;
     public PlayfabShop shop;
     public PlayFabInventry Inventry;
     [SerializeField] private GameObject nameInput;
-    [SerializeField] private GameObject updateNameInput;
     [SerializeField] private GameObject Menu;
     [SerializeField] private GameObject LoginButton;
     public Player player;
@@ -42,7 +40,7 @@ public class PlayfabLogin : MonoBehaviour
         //新規作成したかどうか
         if (success.NewlyCreated)
         {
-            LogionButton.SetActive(false);
+            LoginButton.SetActive(false);
             //ユーザー名入力
             nameInput.SetActive(true);
             InputValueChanged();
@@ -50,6 +48,7 @@ public class PlayfabLogin : MonoBehaviour
         else
         {
             //メインメニュー転移
+            //インベントリ、ショップの取得
             Menu.SetActive(true);
             LoginButton.SetActive(false);
             Inventry.GetCatalogData("main");
@@ -59,7 +58,7 @@ public class PlayfabLogin : MonoBehaviour
         }
     }
 
-    //ユーザーの情報を取得してPlayerに渡す
+    //ユーザーの情報取得
     public void GetPlayerData()
     {
         PlayFabClientAPI.GetUserData(
@@ -68,6 +67,7 @@ public class PlayfabLogin : MonoBehaviour
                 
             }, result =>
             {
+                //プレイヤーにそれぞれの値を渡す
                 player._name = result.Data["Name"].Value;
                 var playerImage = PlayFabInventry.Instance.AllItems.Find(item => item.name == result.Data["Image"].Value);
                 if (playerImage == null)
@@ -102,6 +102,7 @@ public class PlayfabLogin : MonoBehaviour
         }
         InputComplete();
     }
+
     //PlayFabのユーザーアカウントの表示名に名前を渡す
     public void PlayerUpdateUserTitleDisplayName(string name)
     {
@@ -119,7 +120,6 @@ public class PlayfabLogin : MonoBehaviour
         }, error => Debug.LogError("プレイヤー名の設定エラー: " + error.GenerateErrorReport()));
     }
 
-    //名前の変更時呼び出す
 
     //名前記入時の更新
     public void InputValueChanged()
@@ -152,43 +152,6 @@ public class PlayfabLogin : MonoBehaviour
         }, error => Debug.LogError(error.GenerateErrorReport()));
     }
     #endregion
-    //名前の変更時呼び出す
-    public void PlayerNameUpdate()
-    {
-        updateNameInput.SetActive(true);
-        InputValueChanged();
-    }
-
-    //表示名の入力コントロール
-    [SerializeField] TMP_InputField upDateInputName;
-    //完了ボタン
-    [SerializeField] Button updateInputComp;
-    //名前の変更
-    public void UpdatePlayerName()
-    {
-        updateNameInput.SetActive(false);
-        var request = new UpdateUserDataRequest()
-        {
-            Data = new Dictionary<string, string>
-            {
-                { "Name", upDateInputName.text },
-            }
-        };
-
-        PlayFabClientAPI.UpdateUserData(request, OnSuccess, OnError);
-
-        void OnSuccess(UpdateUserDataResult result)
-        {
-            Debug.Log("Success");
-            GetPlayerData();
-            PlayerUpdateUserTitleDisplayName(upDateInputName.text);
-        }
-        void OnError(PlayFabError error)
-        {
-            Debug.LogError(error.GenerateErrorReport());
-        }
-    }
-
     public void PlayerUpdateUserData(string name)
     {
         var request = new UpdateUserDataRequest()
@@ -264,15 +227,14 @@ public class PlayfabLogin : MonoBehaviour
                 Menu.SetActive(true);
                 LoginButton.SetActive(false);
                 Inventry.GetCatalogData("main");
-                //shop.GetCatalogData("main");
+                shop.GetCatalogData("main");
                 userUI.gameObject.SetActive(true);
-                //GetPlayerData(/*success.PlayFabId*/);
                 PlayerUpdateUserTitleDisplayName(inputName.text);
                 PlayerUpdateUserData(inputName.text);
             }, error => Debug.LogError(error.GenerateErrorReport()));
     }
 
-    //初期化の際に呼び出す
+    //アカウント作成時に呼び出す
     public void InputComplete()
     {
         PlayFabInitPlayer();
@@ -280,15 +242,16 @@ public class PlayfabLogin : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //既にログインしているかの確認
         if (GameManager.Instance.OnLogin)
         {
-            LogionButton.SetActive(true);
+            LoginButton.SetActive(true);
             Menu.SetActive(false);
             GameManager.Instance.OnLogin = false;
         }
         else
         {
-            LogionButton.SetActive(false);
+            LoginButton.SetActive(false);
             Menu.SetActive(true);
         }
     }
