@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventry : MonoBehaviour
+public class Inventory : MonoBehaviour
 {
-    public static Inventry instance;
-    InventryUI inventryUI;
+    public static Inventory instance;
+    InventoryUI inventryUI;
     private void Awake()
     {
         if (instance == null)
@@ -16,28 +16,29 @@ public class Inventry : MonoBehaviour
 
     void Start()
     {
-        inventryUI = GetComponent<InventryUI>();
-        //inventryUI.UpdateUI();
+        inventryUI = GetComponent<InventoryUI>();
     }
 
     public List<Item> items = new List<Item>();
 
+    //インベントリにアイテムスロット追加
     public void Add(List<Item> item)
     {
         Debug.Log("Add");
         items = item; 
         inventryUI.UpdateUI(items);
     }
-
+    
     public void Remove(Item item)
     {
         items.Remove(item);
         inventryUI.UpdateUI(items);
     }
 
+    //インベントリリセット
     public void AllClear()
     {
-        Debug.Log("aiueo");
+        Debug.Log("インベントリリセット");
         items.Clear();
         inventryUI.UpdateUI(items);
     }
