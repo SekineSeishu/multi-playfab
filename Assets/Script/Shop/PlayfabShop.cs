@@ -14,7 +14,7 @@ public class PlayfabShop : MonoBehaviour
     public List<CatalogItem> CatalogItems { get; private set; }
     public List<StoreItem> StoreItems { get; private set; }
 
-    public Inventry shopItemGrop;
+    public Inventory shopItemGrop;
 
     private int allItemCount = 0;
     private int nowItemCount = 0;
@@ -90,13 +90,11 @@ public class PlayfabShop : MonoBehaviour
     public void ShopFind(string itemId ,string itemName,int price)
     {
         var matchingItem = AllItems.Find(item => item.name == itemName);
-        //var guids = UnityEditor.AssetDatabase.FindAssets(itemName);
         Debug.Log("t:" + itemName);
         if (matchingItem == null)
         {
             throw new System.IO.FileNotFoundException("見つかりませんでした");
         }
-        //var path = AssetDatabase.GUIDToAssetPath(guids[0]);
         var obj = matchingItem as Item;
 
         Debug.Log(obj.name);
@@ -104,9 +102,11 @@ public class PlayfabShop : MonoBehaviour
         obj.name = itemName;
         obj.ShopItemPrice = price;
 
+        //インベントリに同じアイテムがないか探す
         var shopItem = PlayFabInventry.Instance.userInventry.Find(item => item.name == itemName);
         if (shopItem == null)
         {
+            //なかったら追加
             Debug.Log(obj.name);
             GetShopItems.Add(obj);
             nowItemCount++;
@@ -117,6 +117,7 @@ public class PlayfabShop : MonoBehaviour
         }
     }
 
+    //選択アイテムの購入
     public void PurchaseItem(string catalogVersion, string storeId, string itemId, string virtualCurrency, int price)
     {
         PlayFabClientAPI.PurchaseItem(new PurchaseItemRequest()
