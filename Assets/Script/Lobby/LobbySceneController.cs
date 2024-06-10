@@ -31,7 +31,7 @@ public class LobbySceneController : MonoBehaviour
     {
         if (spaw)
         {
-            Debug.LogError("aaa");
+            //Debug.LogError("aaa");
             PlayerSpawner.Instance.PlayerJoined(runner);
         }
         // プレイヤー数を更新

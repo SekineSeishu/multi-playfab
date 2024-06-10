@@ -34,6 +34,15 @@ public class PlayfabLogin : MonoBehaviour
         PlayFabAuthService.Instance.Authenticate(Authtypes.Silent);
     }
 
+    public void Logout()
+    {
+        PlayFabClientAPI.ForgetAllCredentials();
+        //Menu.SetActive(false);
+        //LoginButton.SetActive(true);
+        //userUI.gameObject.SetActive(false);
+        Debug.Log("Logged out from PlayFab");
+    }
+
     private void PlayFabAuthService_OnLoginSuccess(LoginResult success)
     {
         Debug.Log("ログイン成功");
@@ -122,6 +131,33 @@ public class PlayfabLogin : MonoBehaviour
 
 
     //名前記入時の更新
+    public void CheckForName()
+    {
+        var request = new ExecuteCloudScriptRequest
+        {
+            FunctionName = "CheckDisplayNameExists",
+            FunctionParameter = new {DisplayName = inputName.text},
+            GeneratePlayStreamEvent = true
+        };
+
+        PlayFabClientAPI.ExecuteCloudScript(request, result =>
+        {
+            var functionResult = (bool)result.FunctionResult;
+            if (functionResult)
+            {
+                Debug.LogError("この名前は既に存在します。別の名前を選んでください。");
+            }
+            else
+            {
+                Debug.Log("OK");
+                InputComplete();
+            }
+        }, error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
     public void InputValueChanged()
     {
         inputComp.interactable = IsValidName();
@@ -253,6 +289,12 @@ public class PlayfabLogin : MonoBehaviour
         {
             LoginButton.SetActive(false);
             Menu.SetActive(true);
+            Menu.SetActive(true);
+            LoginButton.SetActive(false);
+            Inventry.GetCatalogData("main");
+            shop.GetCatalogData("main");
+            userUI.gameObject.SetActive(true);
+            GetPlayerData();
         }
     }
 

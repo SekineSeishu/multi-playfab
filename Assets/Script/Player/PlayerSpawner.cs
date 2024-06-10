@@ -31,7 +31,7 @@ public class PlayerSpawner : SimulationBehaviour
     }
     public void PlayerJoined(NetworkRunner Runner)
     {
-        Debug.LogError("aaa");
+        //Debug.LogError("aaa");
         playerSpawnPositionList = LobbyUIManager.Instance.LobbyPosition;
         NetworkObject playerObject = Runner.Spawn(PlayerPrefab, playerSpawnPositionList[Runner.SessionInfo.PlayerCount].position, Quaternion.identity);
         playerObject.transform.SetParent(playerSpawnPositionList[Runner.SessionInfo.PlayerCount]);

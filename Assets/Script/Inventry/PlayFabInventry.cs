@@ -84,7 +84,7 @@ public class PlayFabInventry : MonoBehaviour
                  Debug.Log($"‰¼‘z’Ê‰Ý{virtualCurrency.Key} : {virtualCurrency.Value}");
                  currencyInfo = $"{virtualCurrency.Key}: {virtualCurrency.Value}\n";
              }
-                 coinText.text = currencyInfo;
+                 //coinText.text = currencyInfo;
 
          }, error =>
          {

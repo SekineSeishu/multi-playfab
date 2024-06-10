@@ -27,6 +27,11 @@ public class PlayfabShop : MonoBehaviour
         }
     }
 
+    public void Start()
+    {
+        
+    }
+
     public void GetCatalogData(string catalogVersion)
     {
         PlayFabClientAPI.GetCatalogItems(new GetCatalogItemsRequest()
@@ -111,6 +116,10 @@ public class PlayfabShop : MonoBehaviour
             GetShopItems.Add(obj);
             nowItemCount++;
         }
+        else
+        {
+            allItemCount--;
+        }
         if (nowItemCount == allItemCount)
         {
             shopItemGrop.Add(GetShopItems);
@@ -145,15 +154,5 @@ public class PlayfabShop : MonoBehaviour
         var item = StoreItems.FirstOrDefault();
         PurchaseItem("main", "gold_store", item.ItemId, "GD", (int)item.VirtualCurrencyPrices["GD"]);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
