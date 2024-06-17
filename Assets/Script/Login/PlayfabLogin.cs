@@ -142,6 +142,7 @@ public class PlayfabLogin : MonoBehaviour
 
         PlayFabClientAPI.ExecuteCloudScript(request, result =>
         {
+            //‚±‚±‚ðNUll‚ÆŒ¾‚í‚ê‚é
             var functionResult = (bool)result.FunctionResult;
             if (functionResult)
             {
