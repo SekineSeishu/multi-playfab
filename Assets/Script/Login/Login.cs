@@ -13,13 +13,20 @@ public class Login : MonoBehaviour
     //既存のアカウントの検索
     public void RegisterOrLoginButton()
     {
-        LoginWithPlayFabRequest loginRequest = new LoginWithPlayFabRequest()
+        RegisterPlayFabUserRequest registerRequest = new RegisterPlayFabUserRequest()
+        {
+            Username = userNameInput.text,
+            Password = passwordInput.text,
+            RequireBothUsernameAndEmail = false,
+        };
+        PlayFabClientAPI.RegisterPlayFabUser(registerRequest, OnRegisterSuccess, OnRegisterError);
+        /*LoginWithPlayFabRequest loginRequest = new LoginWithPlayFabRequest()
         {
             Username = userNameInput.text,
             Password = passwordInput.text,
         };
-
-        PlayFabClientAPI.LoginWithPlayFab(loginRequest, OnLoginSuccess, OnLoginError);
+        Debug.Log("name:" + userNameInput.text + "pass:" + passwordInput.text);
+        PlayFabClientAPI.LoginWithPlayFab(loginRequest, OnLoginSuccess, OnLoginError);*/
     }
 
     void OnLoginSuccess(LoginResult result)
@@ -29,6 +36,7 @@ public class Login : MonoBehaviour
 
     void OnLoginError(PlayFabError error)
     {
+        Debug.Log("ログインエラー");
         //新規アカウントの作成
         if (error.Error == PlayFabErrorCode.AccountNotFound || error.Error == PlayFabErrorCode.InvalidUsernameOrPassword)
         {
