@@ -2,40 +2,140 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using Fusion.Sockets;
+using System;
+using System.Linq;
 
-public class PlayerSpawner : SimulationBehaviour
+public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public static PlayerSpawner Instance;
+    public NetworkRunner _runner;
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private RectTransform[] playerSpawnPositionList;
 
-    [Networked]
-    private Vector3 LocalPosition { get; set; }
-    [SerializeField]
-    public List<NetworkObject> playerList;
-    [SerializeField]
-    public List<Transform> playerSpawnPositionList;
-    public GameObject PlayerPrefab;
-
-    private void Awake()
+    void Start()
     {
-        if (Instance == null)
+        _runner = GetComponent<NetworkRunner>();
+        _runner.AddCallbacks(this);
+    }
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        if (playerSpawnPositionList == null || playerSpawnPositionList.Length == 0)
         {
-            Instance = this;
-        }
-        else if (Instance != this)
-        {
-            Destroy(this);
+            Debug.LogError("ê∂ê¨É|ÉWÉVÉáÉìÇ™Ç†ÇËÇ‹ÇπÇÒ");
             return;
         }
 
-        DontDestroyOnLoad(this);
+        int playerIndex = _runner.ActivePlayers.Count() - 1;
+
+        if (playerIndex < 0 || playerIndex >= playerSpawnPositionList.Length)
+        {
+            Debug.LogError("Invalid player index: " + playerIndex);
+            return;
+        }
+
+        if (player == _runner.LocalPlayer)
+        {
+            Transform spawnPosition = playerSpawnPositionList[playerIndex];
+            NetworkObject playerObject = _runner.Spawn(playerPrefab, playerPrefab.transform.position, Quaternion.identity, player);
+        }
     }
-    public void PlayerJoined(NetworkRunner Runner)
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        //Debug.LogError("aaa");
-        playerSpawnPositionList = LobbyUIManager.Instance.LobbyPosition;
-        NetworkObject playerObject = Runner.Spawn(PlayerPrefab, playerSpawnPositionList[Runner.SessionInfo.PlayerCount].position, Quaternion.identity);
-        playerObject.transform.SetParent(playerSpawnPositionList[Runner.SessionInfo.PlayerCount]);
-        LocalPosition = playerObject.transform.localPosition;
-        playerList.Add(playerObject);
+
+    }
+
+
+
+
+
+
+
+
+
+    public void OnConnectedToServer(NetworkRunner runner)
+    {
+        
+    }
+
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
+    {
+        
+    }
+
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
+    {
+        
+    }
+
+    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
+    {
+        
+    }
+
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
+    {
+        
+    }
+
+    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
+    {
+        
+    }
+
+    public void OnInput(NetworkRunner runner, NetworkInput input)
+    {
+        
+    }
+
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
+    {
+        
+    }
+
+    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
+    {
+        
+    }
+
+    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
+    {
+        
+    }
+
+    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
+    {
+        
+    }
+
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
+    {
+        
+    }
+
+    public void OnSceneLoadDone(NetworkRunner runner)
+    {
+        
+    }
+
+    public void OnSceneLoadStart(NetworkRunner runner)
+    {
+        
+    }
+
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
+    {
+        
+    }
+
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+    {
+        
+    }
+
+    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
+    {
+        
     }
 }

@@ -12,9 +12,13 @@ public class LobbyManager : MonoBehaviour
     [SerializeField]
     public NetworkRunner _runner;
     [SerializeField]
-    private string lobbySceneName;
-    [SerializeField]
     public GameObject playerPrefab;
+    [SerializeField] 
+    public GameObject lobbyCodeUI;
+    [SerializeField]
+    private GameObject Lobby;
+    [SerializeField]
+    private LobbyUIManager lobbyUI;
 
     private void Awake()
     {
@@ -30,31 +34,50 @@ public class LobbyManager : MonoBehaviour
 
         DontDestroyOnLoad(this);
     }
-    public async Task StartPrivateLobby(ConnectionData connectionData)
+    public async Task StartPrivateLobby(/*ConnectionData connectionData*/)
     {
-        string lobbyName = "Lobby" + connectionData.PrivateLobbyPass;
-        GameManager.Instance.SetLobbyName(connectionData.PrivateLobbyPass);
+        string lobbyCode = CodeGenerator.GenerateCode(6);
+        Debug.Log("LobbyCode:" +  lobbyCode);
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-        var sceneInfo = new NetworkSceneInfo();
-        if (scene.IsValid)
-        {
-            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-        }
-
         var startResult = await _runner.StartGame(new StartGameArgs()
         {
-            CustomLobbyName = lobbyName,
+            CustomLobbyName = lobbyCode,
             GameMode = GameMode.Shared,
-            SessionProperties = null,
-            Scene = sceneInfo,
+            Scene = scene,
             PlayerCount = 4,
-            SceneManager = _runner.GetComponent<INetworkSceneManager>()
+            SceneManager = _runner.GetComponent<INetworkSceneManager>(),
         });
 
         if (startResult.Ok)
         {
             Debug.Log("Private lobby started successfully.");
-            _runner.GetComponent<NetworkSceneManager>().LoadScene(lobbySceneName,LoadSceneMode.Single);
+            lobbyUI._lobbyCode = lobbyCode;
+            Lobby.transform.localScale = new Vector3(1,1,1);
+        }
+        else
+        {
+            Debug.LogError("Failed to start private lobby: " + startResult.ShutdownReason);
+        }
+    }
+
+    public async Task JoinPrivateLobby(string lobbyCode)
+    {
+        var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+        var startResult = await _runner.StartGame(new StartGameArgs()
+        {
+            CustomLobbyName = lobbyCode,
+            GameMode = GameMode.Shared,
+            Scene = scene,
+            PlayerCount = 4,
+            SceneManager = _runner.GetComponent<INetworkSceneManager>(),
+        });
+
+        if (startResult.Ok)
+        {
+            Debug.Log("Private lobby started successfully.");
+            lobbyUI._lobbyCode = lobbyCode;
+            Lobby.transform.localScale = new Vector3(1, 1, 1);
+            lobbyCodeUI.SetActive(false);
         }
         else
         {

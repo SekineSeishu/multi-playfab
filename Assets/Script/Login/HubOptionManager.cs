@@ -8,34 +8,28 @@ using UnityEngine.UI;
 
 public class HubOptionManager : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField passwordText;
-    [SerializeField] private ConnectionData _initialConnection;
-    [SerializeField] private Toggle privateModeToggle;
-
-    [SerializeField] private TMP_InputField setPasswordText;
+    [SerializeField] private LobbyManager lobbyManager;
+    [SerializeField] private TMP_InputField CodeText;
+    //[SerializeField] private ConnectionData _initialConnection;
     // Start is called before the first frame update
     void Start()
     {
-        _initialConnection.PrivateLobbyPass = "";
+        
     }
 
-    public void StartSetPassword()
+    public async void StartLobby()
     {
-        Guid g = Guid.NewGuid();
-        var pass = g.ToString("N").Substring(0, 2);
-
-        passwordText.text = privateModeToggle.isOn ? pass : "";
-        _initialConnection.PrivateLobbyPass = pass;
+        await lobbyManager.StartPrivateLobby();
     }
-
-    public void StartLobby()
+    public async void JoinLobby()
     {
-        _ = LobbyManager.Instance.StartPrivateLobby(_initialConnection);
-    }
-    public void JoinLobby()
-    {
-         _initialConnection.PrivateLobbyPass = passwordText.text;
-        _ = LobbyManager.Instance.StartPrivateLobby(_initialConnection);
+        string lobbyCode = CodeText.text;
+        if (string.IsNullOrEmpty(lobbyCode))
+        {
+            Debug.LogError("Lobby Code is empty");
+            return;
+        }
+        await lobbyManager.JoinPrivateLobby(lobbyCode);
     }
     // Update is called once per frame
     void Update()

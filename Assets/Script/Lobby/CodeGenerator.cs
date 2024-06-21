@@ -1,18 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
-public class CodeGenerator : MonoBehaviour
+public static class CodeGenerator
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private static readonly Random random = new Random();
+    private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    // Update is called once per frame
-    void Update()
+    public static string GenerateCode(int length)
     {
-        
+        return new string(Enumerable.Repeat(Chars, length)
+           .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }

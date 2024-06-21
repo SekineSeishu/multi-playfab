@@ -6,14 +6,11 @@ using Fusion;
 
 public class LobbyUIManager : MonoBehaviour
 {
+    [SerializeField]
+    private string _closeLobbyCode;
     public static LobbyUIManager Instance;
-    [SerializeField] public List<NetworkObject> playerList;
-    [SerializeField] public List<Transform> LobbyPosition;
+    public string _lobbyCode;
     [SerializeField] private TMP_Text lobbyNameText;
-    [SerializeField] private NetworkObject player;
-    [SerializeField] private LobbyState lobbyState;
-    [SerializeField] private TMP_Text playerCountText;
-    private int playerCount;
 
     private void Awake()
     {
@@ -22,43 +19,24 @@ public class LobbyUIManager : MonoBehaviour
             Instance = this;
         }
     }
-        public void SetLobby(string lobbyName,GameObject playerPrefab,NetworkRunner runner)
-    {
-        if (lobbyNameText != null && playerPrefab != null)
-        {
-            lobbyNameText.text = "Lobby Name:" + lobbyName;
-            //NetworkObject player = runner.Spawn(playerPrefab, LobbyPosition[playerCount].position, Quaternion.identity, runner.LocalPlayer);
-            //player.transform.parent = LobbyPosition[playerCount];
-            //playerList.Add(player);
-        }
-    }
 
-    public void UpdatePlayerCount(int count)
-    {
-        if (playerCountText != null)
-        {
-            playerCountText.text = "Players: " + count;
-            playerCount = count;
-        }
-    }
-
-    public void UpdateLobby()
-    {
-        for (int i = 1; i < playerCount; i++)
-        {
-            playerList[i].transform.parent = null;
-            playerList[i].transform.position = LobbyPosition[i].position;
-            playerList[i].transform.parent = LobbyPosition[playerCount];
-        }
-    }
-
-    // Start is called before the first frame update
     void Start()
     {
-        
+        lobbyNameText.text = "LobbyCode:" + _closeLobbyCode;
     }
 
-    // Update is called once per frame
+    public void OpenOrCloseLobbyCode()
+    {
+        if (lobbyNameText.text == "LobbyCode:" + _closeLobbyCode)
+        {
+            lobbyNameText.text = "LobbyCode:" + _lobbyCode;
+        }
+        else
+        {
+            lobbyNameText.text = "LobbyCode:" + _closeLobbyCode;
+        }
+    }
+
     void Update()
     {
         

@@ -24,7 +24,7 @@ public class LobbySceneController : MonoBehaviour
             playerPrefab = LobbyManager.Instance.playerPrefab;
             runner = LobbyManager.Instance._runner;
             OnPlayerJoined(runner);
-            lobbyUIManager.SetLobby(lobbyName, playerPrefab, runner);
+            //lobbyUIManager.SetLobby(lobbyName, playerPrefab, runner);
         }
     }
     public void OnPlayerJoined(NetworkRunner runner)
@@ -32,10 +32,10 @@ public class LobbySceneController : MonoBehaviour
         if (spaw)
         {
             //Debug.LogError("aaa");
-            PlayerSpawner.Instance.PlayerJoined(runner);
+            //PlayerSpawner.Instance.PlayerJoined(runner);
         }
         // プレイヤー数を更新
-        lobbyUIManager.UpdatePlayerCount(runner.SessionInfo.PlayerCount);
+        //lobbyUIManager.UpdatePlayerCount(runner.SessionInfo.PlayerCount);
     }
     public void BackHomeMenu()
     {

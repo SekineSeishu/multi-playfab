@@ -13,9 +13,12 @@ public class Player : MonoBehaviour
     public string _exp;
     [SerializeField] private TMP_Text playerName;
     [SerializeField] private Image playerImage;
+
+    public GameObject IconCard;
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.transform.localScale = new Vector3(1,1,1);
         playerName.text = _name;
         playerImage.sprite = icon;
     }
