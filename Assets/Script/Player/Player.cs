@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.transform.localScale = new Vector3(1,1,1);
+        //gameObject.transform.localScale = new Vector3(1,1,1);
         playerName.text = _name;
         playerImage.sprite = icon;
     }

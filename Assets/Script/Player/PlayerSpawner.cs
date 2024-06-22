@@ -37,7 +37,7 @@ public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (player == _runner.LocalPlayer)
         {
             Transform spawnPosition = playerSpawnPositionList[playerIndex];
-            NetworkObject playerObject = _runner.Spawn(playerPrefab, playerPrefab.transform.position, Quaternion.identity, player);
+            NetworkObject playerObject = _runner.Spawn(playerPrefab, spawnPosition.position, Quaternion.identity, player);
         }
     }
 
