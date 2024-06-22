@@ -1,5 +1,6 @@
 using CustomConnectionHandler;
 using Fusion;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ public class LobbyManager : MonoBehaviour
         string lobbyCode = CodeGenerator.GenerateCode(6);
         Debug.Log("LobbyCode:" +  lobbyCode);
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+
         var startResult = await _runner.StartGame(new StartGameArgs()
         {
             CustomLobbyName = lobbyCode,
@@ -52,7 +54,7 @@ public class LobbyManager : MonoBehaviour
         {
             Debug.Log("Private lobby started successfully.");
             lobbyUI._lobbyCode = lobbyCode;
-            Lobby.transform.localScale = new Vector3(1,1,1);
+            Lobby.transform.localScale = new Vector3(1, 1, 1);
         }
         else
         {
