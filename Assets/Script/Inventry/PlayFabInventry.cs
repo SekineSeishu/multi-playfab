@@ -11,11 +11,9 @@ public class PlayFabInventry : MonoBehaviour
 {
     public static PlayFabInventry Instance;
     public List<Item> userInventry = new List<Item>();
-    public List<Item> AllItems;
     public List<CatalogItem> CatalogItems { get; private set; }
     private int Inventorycount = 0;
     private int nowInventoryCount = 0;
-    private string nowItem;
     public Inventory Inventory;
     [SerializeField] private TMP_Text coinText;
 
@@ -84,7 +82,7 @@ public class PlayFabInventry : MonoBehaviour
                  Debug.Log($"‰¼‘z’Ê‰Ý{virtualCurrency.Key} : {virtualCurrency.Value}");
                  currencyInfo = $"{virtualCurrency.Key}: {virtualCurrency.Value}\n";
              }
-                 //coinText.text = currencyInfo;
+                 coinText.text = currencyInfo;
 
          }, error =>
          {
@@ -116,7 +114,7 @@ public class PlayFabInventry : MonoBehaviour
     public  void Find(string itemName,string itemDisplayName,string itemID,int itemCount,string Descriotion)
     {
         //AllItems‚Ì’†‚©‚çˆê’v‚·‚é‚à‚Ì‚ð’T‚·
-        var matchingItem = AllItems.Find(item => item.name == itemDisplayName);
+        var matchingItem = ItemList.Instance.allItems.Find(item => item.name == itemDisplayName);
         Debug.Log("t:" + itemName);
         if (matchingItem == null)
         {
@@ -138,6 +136,13 @@ public class PlayFabInventry : MonoBehaviour
             Debug.Log("a");
             Inventory.Add(userInventry);
         }
+    }
+
+    public void OpenInventory()
+    {
+        var inventory = Instantiate(Inventory.gameObject,Inventory.transform);
+        inventory.transform.parent = gameObject.transform;
+        Inventory.Add(userInventry);
     }
 
     public void ConSumeItem(string ID)

@@ -12,8 +12,6 @@ public class LobbyManager : MonoBehaviour
     public static LobbyManager Instance;
     [SerializeField]
     public NetworkRunner _runner;
-    [SerializeField]
-    public GameObject playerPrefab;
     [SerializeField] 
     public GameObject lobbyCodeUI;
     [SerializeField]

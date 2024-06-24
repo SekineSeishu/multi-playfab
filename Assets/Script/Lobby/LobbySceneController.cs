@@ -21,7 +21,6 @@ public class LobbySceneController : MonoBehaviour
         {
             spaw = true;
             lobbyName = GameManager.Instance.CurrentLobbyName;
-            playerPrefab = LobbyManager.Instance.playerPrefab;
             runner = LobbyManager.Instance._runner;
             OnPlayerJoined(runner);
             //lobbyUIManager.SetLobby(lobbyName, playerPrefab, runner);

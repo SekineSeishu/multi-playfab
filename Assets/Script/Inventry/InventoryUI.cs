@@ -24,7 +24,7 @@ public class InventoryUI : MonoBehaviour
     void Start()
     {
         //リストの初期取得
-        firstSlotsPosition = slotsPosition;
+        firstSlotsPosition = new List<Transform>(slotsPosition);
     }
 
     //アイテムの入れたスロットを生成する
@@ -60,11 +60,11 @@ public class InventoryUI : MonoBehaviour
             foreach (Transform child in slotPos)
             {
                 Destroy(child.gameObject);
-                slotr = 0;
-                slotsPosition.Clear();
-                slotsPosition.AddRange(firstSlotsPosition);
             }
         }
+        slotr = 0;
+        slotsPosition.Clear();
+        slotsPosition = new List<Transform>(firstSlotsPosition);
     }
 
 }

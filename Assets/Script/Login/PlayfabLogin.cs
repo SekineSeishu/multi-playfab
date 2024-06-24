@@ -78,7 +78,7 @@ public class PlayfabLogin : MonoBehaviour
             {
                 //プレイヤーにそれぞれの値を渡す
                 player._name = result.Data["Name"].Value;
-                var playerImage = PlayFabInventry.Instance.AllItems.Find(item => item.name == result.Data["Image"].Value);
+                var playerImage = ItemList.Instance.allItems.Find(item => item.name == result.Data["Image"].Value);
                 if (playerImage == null)
                 {
                     throw new System.IO.FileNotFoundException("見つかりませんでした");

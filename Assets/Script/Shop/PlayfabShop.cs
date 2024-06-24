@@ -9,7 +9,6 @@ using System.Linq;
 public class PlayfabShop : MonoBehaviour
 {
     public static PlayfabShop Instance;
-    public List<Item> AllItems;
     public List<Item> GetShopItems = new List<Item>();
     public List<CatalogItem> CatalogItems { get; private set; }
     public List<StoreItem> StoreItems { get; private set; }
@@ -94,7 +93,7 @@ public class PlayfabShop : MonoBehaviour
 
     public void ShopFind(string itemId ,string itemName,int price)
     {
-        var matchingItem = AllItems.Find(item => item.name == itemName);
+        var matchingItem = ItemList.Instance.allItems.Find(item => item.name == itemName);
         Debug.Log("t:" + itemName);
         if (matchingItem == null)
         {
@@ -126,6 +125,13 @@ public class PlayfabShop : MonoBehaviour
         }
     }
 
+    public void OpenShop()
+    {
+        var inventory = Instantiate(shopItemGrop.gameObject, shopItemGrop.transform);
+        inventory.transform.parent = gameObject.transform;
+        shopItemGrop.Add(GetShopItems);
+    }
+
     //選択アイテムの購入
     public void PurchaseItem(string catalogVersion, string storeId, string itemId, string virtualCurrency, int price)
     {
@@ -141,7 +147,7 @@ public class PlayfabShop : MonoBehaviour
         {
             Debug.Log($"{purchaseResult.Items[0].DisplayName}購入成功！");
             PlayFabInventry.Instance.GetUserInventory();
-            shopItemGrop.AllClear();
+            GetShopItems.Clear();
             GetCatalogData("main");
         }, error =>
         {
