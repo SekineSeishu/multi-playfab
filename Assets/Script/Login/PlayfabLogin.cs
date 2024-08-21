@@ -83,6 +83,7 @@ public class PlayfabLogin : MonoBehaviour
                 {
                     throw new System.IO.FileNotFoundException("Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
                 }
+                //î•ñ‚ğ“n‚·
                 player.icon = playerImage.icon;
                 player._rank = result.Data["Rank"].Value;
                 player._exp = result.Data["Exp"].Value;
@@ -252,7 +253,7 @@ public class PlayfabLogin : MonoBehaviour
                 {"Exp","‚O" },
                 {"Rank","‚P" },
                 {"Name","" },
-                {"Image","–‚–@g‚¢" },
+                {"Image","ƒXƒLƒ“1" },
             }
         };
 
