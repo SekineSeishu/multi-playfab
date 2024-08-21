@@ -8,9 +8,13 @@ using System.Linq;
 
 public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
+    //ネットワークランナー
     public NetworkRunner _runner;
+    //プレイヤーオブジェクト
     [SerializeField] private GameObject playerPrefab;
+    //ロビーキャンバス
     [SerializeField] private Canvas canvas;
+    //ロビーのプレイヤーオブジェクトの生成位置リスト
     [SerializeField] private RectTransform[] playerSpawnPositionList;
 
     void Start()
@@ -18,8 +22,11 @@ public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
         _runner = GetComponent<NetworkRunner>();
         _runner.AddCallbacks(this);
     }
+
+    //ロビーでの参加が出来た際の処理
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
+        //生成位置リストがない場合
         if (playerSpawnPositionList == null || playerSpawnPositionList.Length == 0)
         {
             Debug.LogError("生成ポジションがありません");
@@ -33,7 +40,7 @@ public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Debug.LogError("Invalid player index: " + playerIndex);
             return;
         }
-
+        //入ってきた順番に応じた位置にプレイヤーを生成する
         if (player == _runner.LocalPlayer)
         {
             Transform spawnPosition = playerSpawnPositionList[playerIndex];
