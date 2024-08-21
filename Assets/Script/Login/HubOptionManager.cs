@@ -1,4 +1,3 @@
-using CustomConnectionHandler;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,8 +9,7 @@ public class HubOptionManager : MonoBehaviour
 {
     [SerializeField] private LobbyManager lobbyManager;
     [SerializeField] private TMP_InputField CodeText;
-    //[SerializeField] private ConnectionData _initialConnection;
-    // Start is called before the first frame update
+
     void Start()
     {
         
@@ -31,7 +29,6 @@ public class HubOptionManager : MonoBehaviour
         }
         await lobbyManager.JoinPrivateLobby(lobbyCode);
     }
-    // Update is called once per frame
     void Update()
     {
         
