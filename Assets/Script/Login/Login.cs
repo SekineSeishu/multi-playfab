@@ -20,13 +20,6 @@ public class Login : MonoBehaviour
             RequireBothUsernameAndEmail = false,
         };
         PlayFabClientAPI.RegisterPlayFabUser(registerRequest, OnRegisterSuccess, OnRegisterError);
-        /*LoginWithPlayFabRequest loginRequest = new LoginWithPlayFabRequest()
-        {
-            Username = userNameInput.text,
-            Password = passwordInput.text,
-        };
-        Debug.Log("name:" + userNameInput.text + "pass:" + passwordInput.text);
-        PlayFabClientAPI.LoginWithPlayFab(loginRequest, OnLoginSuccess, OnLoginError);*/
     }
 
     void OnLoginSuccess(LoginResult result)
