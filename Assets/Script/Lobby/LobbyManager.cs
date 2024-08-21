@@ -1,4 +1,3 @@
-using CustomConnectionHandler;
 using Fusion;
 using System;
 using System.Collections;
@@ -10,14 +9,14 @@ using UnityEngine.SceneManagement;
 public class LobbyManager : MonoBehaviour
 {
     public static LobbyManager Instance;
-    [SerializeField]
-    public NetworkRunner _runner;
-    [SerializeField] 
-    public GameObject lobbyCodeUI;
-    [SerializeField]
-    private GameObject Lobby;
-    [SerializeField]
-    private LobbyUIManager lobbyUI;
+    //ネットワークランナー
+    [SerializeField] public NetworkRunner _runner;
+    //ロビーコードを入力するオブジェクト
+    [SerializeField] public GameObject lobbyCodeUI;
+    //ロビー
+    [SerializeField] private GameObject Lobby;
+    //ロビーで使われるUI
+    [SerializeField] private LobbyUIManager lobbyUI;
 
     private void Awake()
     {
@@ -33,12 +32,14 @@ public class LobbyManager : MonoBehaviour
 
         DontDestroyOnLoad(this);
     }
-    public async Task StartPrivateLobby(/*ConnectionData connectionData*/)
+
+    //ロビーの作成
+    public async Task StartPrivateLobby()
     {
+        //英数字でランダムな6桁のロビーコードを作成
         string lobbyCode = CodeGenerator.GenerateCode(6);
         Debug.Log("LobbyCode:" +  lobbyCode);
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-
         var startResult = await _runner.StartGame(new StartGameArgs()
         {
             CustomLobbyName = lobbyCode,
@@ -60,8 +61,10 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    //ロビー参加
     public async Task JoinPrivateLobby(string lobbyCode)
     {
+        //入力したロビーコードと一致するロビーを探す
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
         var startResult = await _runner.StartGame(new StartGameArgs()
         {
@@ -83,16 +86,5 @@ public class LobbyManager : MonoBehaviour
         {
             Debug.LogError("Failed to start private lobby: " + startResult.ShutdownReason);
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
