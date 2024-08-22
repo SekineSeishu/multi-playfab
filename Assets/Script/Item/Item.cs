@@ -36,27 +36,10 @@ public class Item : ScriptableObject
     
     }
 
-    //アイテム購入
-    public void buy()
-    {
-        PlayfabShop.Instance.PurchaseItem("main", "gold_store", ItemID, "GD", (int)ShopItemPrice);
-    }
-
-    //アイテム使用
-    public void Use()
-    {
-        itemCounts--;
-        PlayFabInventry.Instance.ConSumeItem(ItemID);
-        if (itemCounts == 0)
-        {
-            Inventory.instance.Remove(this);
-        }
-        Debug.Log(name + "を使用しました");
-    }
-
     //アイテム詳細を見る
     public void see()
     {
+        Debug.Log(name + "のアイテム詳細");
         GameObject data = Instantiate(ItemdataUI);
         ItemData itemData = data.GetComponent<ItemData>();
         itemData.name = name;
@@ -67,6 +50,7 @@ public class Item : ScriptableObject
     //ショップアイテムの詳細を見る
     public void shopItemSee()
     {
+        Debug.Log(name + "のアイテム詳細");
         GameObject data = Instantiate(ShopItemdataUI);
         ItemData itemData = data.GetComponent<ItemData>();
         itemData.ItemID = ItemID;
