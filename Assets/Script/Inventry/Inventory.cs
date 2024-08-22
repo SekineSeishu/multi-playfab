@@ -5,18 +5,13 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory instance;
-    [SerializeField] private InventoryUI inventryUI;
+    [SerializeField] private InventoryUI inventryUI;//インベントリUI
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
         }
-    }
-
-    void Start()
-    {
-        
     }
     //インベントリに入っているアイテム一覧
     public List<Item> items = new List<Item>();
@@ -29,6 +24,7 @@ public class Inventory : MonoBehaviour
         inventryUI.UpdateUI(items);
     }
     
+    //アイテムを外す
     public void Remove(Item item)
     {
         items.Remove(item);
