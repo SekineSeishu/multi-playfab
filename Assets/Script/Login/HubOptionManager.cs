@@ -7,18 +7,21 @@ using UnityEngine.UI;
 
 public class HubOptionManager : MonoBehaviour
 {
-    [SerializeField] private LobbyManager lobbyManager;
-    [SerializeField] private TMP_InputField CodeText;
+    [SerializeField] private LobbyManager lobbyManager;//ロビー管理
+    [SerializeField] private TMP_InputField CodeText;//コード入力
 
     void Start()
     {
         
     }
 
+    //ロビーを作る（ボタン）
     public async void StartLobby()
     {
         await lobbyManager.StartPrivateLobby();
     }
+
+    //ロビーに参加する(ボタン)
     public async void JoinLobby()
     {
         string lobbyCode = CodeText.text;
