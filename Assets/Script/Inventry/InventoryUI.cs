@@ -26,7 +26,7 @@ public class InventoryUI : MonoBehaviour
     void Start()
     {
         //リストの初期取得
-        _firstSlotsPosition = new List<Transform>(_slotsPosition);
+        _slotsPosition = new List<Transform>(_firstSlotsPosition);
     }
 
     //アイテムの入れたスロットを生成する
