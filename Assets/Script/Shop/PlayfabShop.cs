@@ -31,8 +31,11 @@ public class PlayfabShop : MonoBehaviour
         
     }
 
+    //サーバー内にあるアイテムの情報の取得
     public void GetCatalogData(string catalogVersion)
     {
+        // アイテムのカタログ情報を取得するリクエストを作成
+        // PlayFabクライアントでリクエストを実行
         PlayFabClientAPI.GetCatalogItems(new GetCatalogItemsRequest()
         {
             CatalogVersion = catalogVersion,
@@ -50,6 +53,7 @@ public class PlayfabShop : MonoBehaviour
         });
     }
 
+    //ストアデータの取得
     public void GetStoreData(string catalogVersion, string storeId)
     {
         PlayFabClientAPI.GetStoreItems(new GetStoreItemsRequest()
@@ -63,12 +67,13 @@ public class PlayfabShop : MonoBehaviour
             
             StoreItems = result.Store;
 
-
+            
             foreach (var storeItem in StoreItems)
             {
                 var catalogItem = CatalogItems.Find(x => x.ItemId == storeItem.ItemId);
                 if (catalogItem != null)
                 {
+                    //ストア内のアイテム情報を取得
                     string itemId = storeItem.ItemId;
                     string displayName = catalogItem.DisplayName;
                     string description = catalogItem.Description;
@@ -93,6 +98,7 @@ public class PlayfabShop : MonoBehaviour
 
     public void ShopFind(string itemId ,string itemName,int price)
     {
+        //AllItemsの中から一致するものを探す
         var matchingItem = ItemList.Instance.allItems.Find(item => item.name == itemName);
         Debug.Log("t:" + itemName);
         if (matchingItem == null)
@@ -153,12 +159,6 @@ public class PlayfabShop : MonoBehaviour
         {
             Debug.Log(error.GenerateErrorReport());
         });
-    }
-
-    public void OnClick()
-    {
-        var item = StoreItems.FirstOrDefault();
-        PurchaseItem("main", "gold_store", item.ItemId, "GD", (int)item.VirtualCurrencyPrices["GD"]);
     }
 
 }
