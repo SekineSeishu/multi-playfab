@@ -8,40 +8,12 @@ using System;
 
 public class RoomManager : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public UIManager uiManager;
     private NetworkRunner networkRunner;
     private List<SessionInfo> sessionList = new List<SessionInfo>();
     // Start is called before the first frame update
     void Start()
     {
         
-    }
-
-    public void CreateRoom(string roomName,int maxPlayers)
-    {
-        if (networkRunner == null)
-        {
-            
-            networkRunner = GetComponent<NetworkRunner>();
-            networkRunner.name = "NetworkRunner";
-
-            var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-            var sceneInfo = new NetworkSceneInfo();
-            if (scene.IsValid)
-            {
-                sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-            }
-            var startArgs = new StartGameArgs
-            {
-                GameMode = GameMode.Shared,
-                SessionName = roomName,
-                Scene = scene,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
-                PlayerCount = maxPlayers
-            };
-            OnSessionListUpdated(networkRunner, sessionList);
-            networkRunner.StartGame(startArgs);
-        }
     }
 
     public void JoinRoom(string roomName)
@@ -58,20 +30,6 @@ public class RoomManager : MonoBehaviour, INetworkRunnerCallbacks
                 GameMode = GameMode.Client,
                 SessionName = roomName,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
-            });
-        }
-    }
-
-    public async void RandomRoom()
-    {
-        if (networkRunner == null)
-        {
-            networkRunner = GetComponent<NetworkRunner>();
-            networkRunner.name = "NetworkRunner";
-
-            await networkRunner.StartGame(new StartGameArgs()
-            {
-                GameMode = GameMode.AutoHostOrClient,
             });
         }
     }
@@ -144,8 +102,7 @@ public class RoomManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-        Debug.LogError("a");
-        uiManager.UpdateRoomList(sessionList);
+
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)

@@ -8,8 +8,10 @@ using Image = UnityEngine.UI.Image;
 
 public class UserProfielUI : MonoBehaviour
 {
-    [SerializeField] private TMP_Text nameText;
-    [SerializeField] private Image profielImage;
+    [SerializeField] private TMP_Text nameText;//プレイヤー名の表示
+    [SerializeField] private Image profielImage;//プレイヤーアイコンの表示
+
+    //プレイヤー情報をUIにセットする
     public void SetProfiel(string name,Sprite playerIcon)
     {
         nameText.text = name;

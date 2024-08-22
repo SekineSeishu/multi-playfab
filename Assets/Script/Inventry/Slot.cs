@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
+    //アイテムアイコン
     public Image icon;
+    //アイテムデータ
     public Item item;
 
     //アイテム追加

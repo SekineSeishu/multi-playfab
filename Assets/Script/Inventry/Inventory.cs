@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory instance;
-    InventoryUI inventryUI;
+    [SerializeField] private InventoryUI inventryUI;
     private void Awake()
     {
         if (instance == null)
@@ -16,9 +16,9 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
-        inventryUI = GetComponent<InventoryUI>();
+        
     }
-
+    //インベントリに入っているアイテム一覧
     public List<Item> items = new List<Item>();
 
     //インベントリにアイテムスロット追加
@@ -41,11 +41,5 @@ public class Inventory : MonoBehaviour
         Debug.Log("インベントリリセット");
         items.Clear();
         inventryUI.UpdateUI(items);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
