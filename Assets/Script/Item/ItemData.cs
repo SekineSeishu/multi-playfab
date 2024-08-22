@@ -22,9 +22,9 @@ public class ItemData : MonoBehaviour
     public int ShopItemPrice;
 
     [SerializeField] private Player player;
-    public TextMeshProUGUI dataName;
-    public TextMeshProUGUI dataText;
-    public TextMeshProUGUI setSkinText;
+    public TMP_Text dataName;//アイテム名の表示
+    public TMP_Text dataText;//アイテムテキストの表示
+    public TMP_Text setSkinText;//アイテム設定状態の表示
     public Image Icon;
     public GameObject UI;
     // Start is called before the first frame update
@@ -32,7 +32,7 @@ public class ItemData : MonoBehaviour
     {
         if (setSkinText != null)
         {
-            if (icon.name == player.icon.name)
+            if (icon.name == player.icon.name)//プレイヤースキンと一緒なら実行
             {
                 setSkinText.text = "設定中";
             }
@@ -48,7 +48,7 @@ public class ItemData : MonoBehaviour
 
     public void SetSkin()
     {
-        if(setSkinText.text == "設定")
+        if(setSkinText.text == "設定") //スキンを設定していなければ実行
         {
             var request = new UpdateUserDataRequest()
             {
@@ -69,6 +69,7 @@ public class ItemData : MonoBehaviour
             {
                 Debug.LogError(error.GenerateErrorReport());
             }
+            //設定していることを表現
             setSkinText.text = "設定中";
         }
         
@@ -76,12 +77,14 @@ public class ItemData : MonoBehaviour
 
     public void buy()
     {
+        //アイテム購入
         PlayfabShop.Instance.PurchaseItem("main", "gold_store", ItemID, "GD", (int)ShopItemPrice);
         Close();
     }
 
     public void Close()
     {
+        //画面を閉じる
         Destroy(UI);
     }
 
