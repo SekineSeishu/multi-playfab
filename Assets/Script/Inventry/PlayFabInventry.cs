@@ -10,12 +10,12 @@ using TMPro;
 public class PlayFabInventry : MonoBehaviour
 {
     public static PlayFabInventry Instance;
-    public List<Item> userInventry = new List<Item>();
-    public List<CatalogItem> CatalogItems { get; private set; }
-    private int Inventorycount = 0;
-    private int nowInventoryCount = 0;
-    public Inventory Inventory;
-    [SerializeField] private TMP_Text coinText;
+    public List<Item> userInventry = new List<Item>();//プレイヤーのインベントリリスト
+    public List<CatalogItem> CatalogItems { get; private set; }//サーバーにあるアイテム情報
+    private int Inventorycount = 0;//インベントリにあるアイテムの個数
+    private int nowInventoryCount = 0;//取得し終わったアイテムの数
+    public Inventory Inventory;//インベントリ
+    [SerializeField] private TMP_Text coinText;//ゲーム内通貨の表示
 
     public void Awake()
     {
@@ -29,6 +29,7 @@ public class PlayFabInventry : MonoBehaviour
         
     }
 
+    //サーバー内にあるアイテムの情報の取得
     public void GetCatalogData(string catalogVersion)
     {
         PlayFabClientAPI.GetCatalogItems(new GetCatalogItemsRequest()
@@ -50,6 +51,7 @@ public class PlayFabInventry : MonoBehaviour
     //インベントリの情報を取得
     public void GetUserInventory()
     {
+        //インベントリUIの中身を初期化
         Inventory.AllClear();
         userInventry.Clear();
         nowInventoryCount = 0;
@@ -65,6 +67,7 @@ public class PlayFabInventry : MonoBehaviour
              {
                  string itemId = item.DisplayName;
                  Debug.Log($"ID : {item.ItemId}, Name : {item.DisplayName}, ItemInstanceId : {item.ItemInstanceId}");
+                 //同じアイテムが複数個あるかどうか
                  if (itemCounts.ContainsKey(itemId))
                  {
                      itemCounts[itemId]++;
@@ -77,6 +80,7 @@ public class PlayFabInventry : MonoBehaviour
                  GetItemDescription(item.ItemId,item.DisplayName,item.ItemInstanceId,itemCounts[itemId]);
             }
              string currencyInfo = "\n";
+             //ゲーム内通貨の取得
              foreach (var virtualCurrency in result.VirtualCurrency)
              {
                  Debug.Log($"仮想通貨{virtualCurrency.Key} : {virtualCurrency.Value}");
@@ -120,6 +124,7 @@ public class PlayFabInventry : MonoBehaviour
         {
             throw new System.IO.FileNotFoundException("見つかりませんでした");
         }
+        //アイテムの情報を渡す
         var obj = matchingItem;
         Debug.Log(obj.name);
         obj.ItemID = itemID;
@@ -131,9 +136,10 @@ public class PlayFabInventry : MonoBehaviour
         nowInventoryCount++;
         Debug.Log("現在の数:" + nowInventoryCount);
 
+        //インベントリの中身を全ての取得したら実行
         if (nowInventoryCount == Inventorycount)
         {
-            Debug.Log("a");
+            Debug.Log("全て取得完了！");
             Inventory.Add(userInventry);
         }
     }
@@ -143,30 +149,6 @@ public class PlayFabInventry : MonoBehaviour
         var inventory = Instantiate(Inventory.gameObject,Inventory.transform);
         inventory.transform.parent = gameObject.transform;
         Inventory.Add(userInventry);
-    }
-
-    public void ConSumeItem(string ID)
-    {
-        Debug.Log(ID);
-
-        var consumeItemRequest = new ConsumeItemRequest
-        {
-            ItemInstanceId = ID,
-            ConsumeCount = 1,
-        };
-        Debug.Log("アイテム消費");
-        PlayFabClientAPI.ConsumeItem(consumeItemRequest, OnSuccess, OnError);;
-    }
-
-    private void OnSuccess(ConsumeItemResult result)
-    {
-        Debug.Log($"インベントリのアイテム({result.ItemInstanceId}の消費に成功");
-        GetUserInventory();
-    }
-
-    private void OnError(PlayFabError error)
-    {
-        Debug.LogError($"インベントリのアイテムの消費に失敗");
     }
     // Update is called once per frame
     void Update()
