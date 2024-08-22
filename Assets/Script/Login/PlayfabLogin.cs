@@ -10,15 +10,15 @@ using UnityEngine.UI;
 public class PlayfabLogin : MonoBehaviour
 {
     public static PlayfabLogin Instance;
-    public PlayfabShop shop;
-    public PlayFabInventry Inventry;
-    [SerializeField] private GameObject nameInput;
-    [SerializeField] private GameObject Menu;
-    [SerializeField] private GameObject LoginButton;
+    public PlayfabShop shop;//ショップ情報の取得
+    public PlayFabInventry Inventry;//インベントリ情報の取得
+    [SerializeField] private GameObject nameInput;//ユーザー名入力画面
+    [SerializeField] private GameObject Menu;//メニュー画面
+    [SerializeField] private GameObject LoginButton;//ログインボタン
     public Player player;
-    [SerializeField] private UserProfielUI userUI;
-    [SerializeField] private string userRank;
-    [SerializeField] private string userExp;
+    [SerializeField] private UserProfielUI userUI;//ユーザー情報のUI
+    [SerializeField] private string userRank;//プレイヤーのランク
+    [SerializeField] private string userExp;//プレイヤーの経験値
 
     public void Awake()
     {
@@ -30,17 +30,9 @@ public class PlayfabLogin : MonoBehaviour
 
     public void Login()
     {
+        //一度でもログインしていたらそのままログイン
         PlayFabAuthService.OnLoginSuccess += PlayFabAuthService_OnLoginSuccess;
         PlayFabAuthService.Instance.Authenticate(Authtypes.Silent);
-    }
-
-    public void Logout()
-    {
-        PlayFabClientAPI.ForgetAllCredentials();
-        //Menu.SetActive(false);
-        //LoginButton.SetActive(true);
-        //userUI.gameObject.SetActive(false);
-        Debug.Log("Logged out from PlayFab");
     }
 
     private void PlayFabAuthService_OnLoginSuccess(LoginResult success)
@@ -130,38 +122,9 @@ public class PlayfabLogin : MonoBehaviour
         }, error => Debug.LogError("プレイヤー名の設定エラー: " + error.GenerateErrorReport()));
     }
 
-
-    //名前記入時の更新
-    public void CheckForName()
-    {
-        var request = new ExecuteCloudScriptRequest
-        {
-            FunctionName = "CheckDisplayNameExists",
-            FunctionParameter = new {DisplayName = inputName.text},
-            GeneratePlayStreamEvent = true
-        };
-
-        PlayFabClientAPI.ExecuteCloudScript(request, result =>
-        {
-            //ここをNUllと言われる
-            var functionResult = (bool)result.FunctionResult;
-            if (functionResult)
-            {
-                Debug.LogError("この名前は既に存在します。別の名前を選んでください。");
-            }
-            else
-            {
-                Debug.Log("OK");
-                InputComplete();
-            }
-        }, error =>
-        {
-            Debug.LogError(error.GenerateErrorReport());
-        });
-    }
-
     public void InputValueChanged()
     {
+        //文字数制限の設定
         inputComp.interactable = IsValidName();
     }
 
