@@ -1,4 +1,4 @@
-#PlayFab（現在制作途中）
+# PlayFab（制作途中)
 
 インベントリの表示                       
 PlayFabInventory(サーバーからプレイヤーのインベントリ情報を取得)//ショップならここがPlayFabshopに変わる <br>
