@@ -15,7 +15,7 @@ PlayFabShopではプラスでインベントリに既に所持していないか
 <br>
 InventoryUI  https://github.com/SekineSeishu/multi-playfab/blob/main/Assets/Script/Inventry/InventoryUI.cs<br>
 アイテムデータを持つスロットオブジェクトを指定位置に生成後下の段に新しい指定位置を作る<br>
-インベントリの最大容量の実装、最大容量の変化の実装を見越して半永久的にアイテムスロットを生成できるようにした
+インベントリの最大容量の実装、最大容量の変化の実装を見越して半永久的にアイテムスロットを生成できるようにした<br>
 <br>
 LobbyManager  https://github.com/SekineSeishu/multi-playfab/blob/main/Assets/Script/Lobby/LobbyManager.cs<br>
 ※StartPrivateLobby()は現状はまだ使用していない
