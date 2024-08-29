@@ -55,12 +55,12 @@ public class PlayfabLogin : MonoBehaviour
             Inventry.GetCatalogData("main");
             shop.GetCatalogData("main");
             userUI.gameObject.SetActive(true);
-            GetPlayerData();
+            GetPlayerData(player);
         }
     }
 
     //ƒ†[ƒU[‚Ìî•ñŽæ“¾
-    public void GetPlayerData()
+    public void GetPlayerData(Player player)
     {
         PlayFabClientAPI.GetUserData(
             new GetUserDataRequest
@@ -168,7 +168,7 @@ public class PlayfabLogin : MonoBehaviour
         void OnSuccess(UpdateUserDataResult result)
         {
             Debug.Log("Success");
-            GetPlayerData();
+            GetPlayerData(player);
             PlayerUpdateUserTitleDisplayName(name);
         }
         void OnError(PlayFabError error)
@@ -202,7 +202,7 @@ public class PlayfabLogin : MonoBehaviour
                 LoginButton.SetActive(false);
                 shop.GetCatalogData("main");
                 userUI.gameObject.SetActive(true);
-                GetPlayerData(/*success.PlayFabId*/);
+                GetPlayerData(player);
             }, error => Debug.LogError(error.GenerateErrorReport()));
     }
     #endregion
@@ -259,7 +259,7 @@ public class PlayfabLogin : MonoBehaviour
             Inventry.GetCatalogData("main");
             shop.GetCatalogData("main");
             userUI.gameObject.SetActive(true);
-            GetPlayerData();
+            GetPlayerData(player);
         }
     }
 
