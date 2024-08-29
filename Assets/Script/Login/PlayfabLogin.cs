@@ -10,15 +10,15 @@ using UnityEngine.UI;
 public class PlayfabLogin : MonoBehaviour
 {
     public static PlayfabLogin Instance;
-    public PlayfabShop shop;//ƒVƒ‡ƒbƒvî•ñ‚Ìæ“¾
-    public PlayFabInventry Inventry;//ƒCƒ“ƒxƒ“ƒgƒŠî•ñ‚Ìæ“¾
-    [SerializeField] private GameObject nameInput;//ƒ†[ƒU[–¼“ü—Í‰æ–Ê
-    [SerializeField] private GameObject Menu;//ƒƒjƒ…[‰æ–Ê
-    [SerializeField] private GameObject LoginButton;//ƒƒOƒCƒ“ƒ{ƒ^ƒ“
+    public PlayfabShop shop;//ã‚·ãƒ§ãƒƒãƒ—æƒ…å ±ã®å–å¾—
+    public PlayFabInventry Inventry;//ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªæƒ…å ±ã®å–å¾—
+    [SerializeField] private GameObject nameInput;//ãƒ¦ãƒ¼ã‚¶ãƒ¼åå…¥åŠ›ç”»é¢
+    [SerializeField] private GameObject Menu;//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”»é¢
+    [SerializeField] private GameObject LoginButton;//ãƒ­ã‚°ã‚¤ãƒ³ãƒœã‚¿ãƒ³
     public Player player;
-    [SerializeField] private UserProfielUI userUI;//ƒ†[ƒU[î•ñ‚ÌUI
-    [SerializeField] private string userRank;//ƒvƒŒƒCƒ„[‚Ìƒ‰ƒ“ƒN
-    [SerializeField] private string userExp;//ƒvƒŒƒCƒ„[‚ÌŒoŒ±’l
+    [SerializeField] private UserProfielUI userUI;//ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã®UI
+    [SerializeField] private string userRank;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ©ãƒ³ã‚¯
+    [SerializeField] private string userExp;//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çµŒé¨“å€¤
 
     public void Awake()
     {
@@ -30,26 +30,26 @@ public class PlayfabLogin : MonoBehaviour
 
     public void Login()
     {
-        //ˆê“x‚Å‚àƒƒOƒCƒ“‚µ‚Ä‚¢‚½‚ç‚»‚Ì‚Ü‚ÜƒƒOƒCƒ“
+        //ä¸€åº¦ã§ã‚‚ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ãŸã‚‰ãã®ã¾ã¾ãƒ­ã‚°ã‚¤ãƒ³
         PlayFabAuthService.OnLoginSuccess += PlayFabAuthService_OnLoginSuccess;
         PlayFabAuthService.Instance.Authenticate(Authtypes.Silent);
     }
 
     private void PlayFabAuthService_OnLoginSuccess(LoginResult success)
     {
-        Debug.Log("ƒƒOƒCƒ“¬Œ÷");
-        //V‹Kì¬‚µ‚½‚©‚Ç‚¤‚©
+        Debug.Log("ãƒ­ã‚°ã‚¤ãƒ³æˆåŠŸ");
+        //æ–°è¦ä½œæˆã—ãŸã‹ã©ã†ã‹
         if (success.NewlyCreated)
         {
             LoginButton.SetActive(false);
-            //ƒ†[ƒU[–¼“ü—Í
+            //ãƒ¦ãƒ¼ã‚¶ãƒ¼åå…¥åŠ›
             nameInput.SetActive(true);
             InputValueChanged();
         }
         else
         {
-            //ƒƒCƒ“ƒƒjƒ…[“]ˆÚ
-            //ƒCƒ“ƒxƒ“ƒgƒŠAƒVƒ‡ƒbƒv‚Ìæ“¾
+            //ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼è»¢ç§»
+            //ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã€ã‚·ãƒ§ãƒƒãƒ—ã®å–å¾—
             Menu.SetActive(true);
             LoginButton.SetActive(false);
             Inventry.GetCatalogData("main");
@@ -59,7 +59,7 @@ public class PlayfabLogin : MonoBehaviour
         }
     }
 
-    //ƒ†[ƒU[‚Ìî•ñæ“¾
+    //ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®æƒ…å ±å–å¾—
     public void GetPlayerData(Player player)
     {
         PlayFabClientAPI.GetUserData(
@@ -68,14 +68,14 @@ public class PlayfabLogin : MonoBehaviour
                 
             }, result =>
             {
-                //ƒvƒŒƒCƒ„[‚É‚»‚ê‚¼‚ê‚Ì’l‚ğ“n‚·
+                //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãã‚Œãã‚Œã®å€¤ã‚’æ¸¡ã™
                 player._name = result.Data["Name"].Value;
                 var playerImage = ItemList.Instance.allItems.Find(item => item.name == result.Data["Image"].Value);
                 if (playerImage == null)
                 {
-                    throw new System.IO.FileNotFoundException("Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
+                    throw new System.IO.FileNotFoundException("è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ");
                 }
-                //î•ñ‚ğ“n‚·
+                //æƒ…å ±ã‚’æ¸¡ã™
                 player.icon = playerImage.icon;
                 player._rank = result.Data["Rank"].Value;
                 player._exp = result.Data["Exp"].Value;
@@ -88,29 +88,29 @@ public class PlayfabLogin : MonoBehaviour
     }
 
 
-    //•\¦–¼‚Ì“ü—ÍƒRƒ“ƒgƒ[ƒ‹
+    //è¡¨ç¤ºåã®å…¥åŠ›ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«
     [SerializeField] TMP_InputField inputName;
-    //Š®—¹ƒ{ƒ^ƒ“
+    //å®Œäº†ãƒœã‚¿ãƒ³
     [SerializeField] Button inputComp;
 
-    //–¼‘O‚ª“ü—Í‚³‚ê‚Ä‚¢‚é‚©‚ÌŠm”F
+    //åå‰ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã‹ã®ç¢ºèª
     public void RegisterAccount()
     {
         string name = inputName.text;
         if (string.IsNullOrEmpty(name))
         {
-            Debug.LogError("Name‚ª‹ó‚Å‚·B");
+            Debug.LogError("NameãŒç©ºã§ã™ã€‚");
             return;
         }
         InputComplete();
     }
 
-    //PlayFab‚Ìƒ†[ƒU[ƒAƒJƒEƒ“ƒg‚Ì•\¦–¼‚É–¼‘O‚ğ“n‚·
+    //PlayFabã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®è¡¨ç¤ºåã«åå‰ã‚’æ¸¡ã™
     public void PlayerUpdateUserTitleDisplayName(string name)
     {
         if (string.IsNullOrEmpty(inputName.text))
         {
-            Debug.LogError("“ü—Í‚³‚ê‚½–¼‘O‚ª‹ó‚Å‚·B");
+            Debug.LogError("å…¥åŠ›ã•ã‚ŒãŸåå‰ãŒç©ºã§ã™ã€‚");
             return;
         }
         PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
@@ -118,25 +118,25 @@ public class PlayfabLogin : MonoBehaviour
             DisplayName = name
         }, result =>
         {
-            Debug.Log("ƒvƒŒƒCƒ„[–¼:" + result.DisplayName);
-        }, error => Debug.LogError("ƒvƒŒƒCƒ„[–¼‚Ìİ’èƒGƒ‰[: " + error.GenerateErrorReport()));
+            Debug.Log("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å:" + result.DisplayName);
+        }, error => Debug.LogError("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åã®è¨­å®šã‚¨ãƒ©ãƒ¼: " + error.GenerateErrorReport()));
     }
 
     public void InputValueChanged()
     {
-        //•¶š”§ŒÀ‚Ìİ’è
+        //æ–‡å­—æ•°åˆ¶é™ã®è¨­å®š
         inputComp.interactable = IsValidName();
     }
 
-    //–¼‘O‚Ì•¶š”§ŒÀ
+    //åå‰ã®æ–‡å­—æ•°åˆ¶é™
     private bool IsValidName()
     {
-        //•\¦–¼‚Í3•¶šˆÈã‚P‚O•¶šˆÈ“à
+        //è¡¨ç¤ºåã¯3æ–‡å­—ä»¥ä¸Šï¼‘ï¼æ–‡å­—ä»¥å†…
         return !string.IsNullOrWhiteSpace(inputName.text)
             && 3 <= inputName.text.Length
             && inputName.text.Length <= 10;
     }
-    #region ƒvƒŒƒCƒ„[•\¦‚ÌXV
+    #region ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¡¨ç¤ºã®æ›´æ–°
     private void UpdateUserTitleDisplayName()
     {
         PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
@@ -144,12 +144,7 @@ public class PlayfabLogin : MonoBehaviour
             DisplayName = inputName.text
         }, result =>
         {
-            Debug.Log("ƒvƒŒƒCƒ„[–¼:" + result.DisplayName);
-            /*nametext.SetActive(false);
-            Inventry.GetCatalogData("main");
-            Menu.SetActive(true);
-            LoginButton.SetActive(false);
-            shop.GetCatalogData("main");*/
+            Debug.Log("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å:" + result.DisplayName);
         }, error => Debug.LogError(error.GenerateErrorReport()));
     }
     #endregion
@@ -177,7 +172,7 @@ public class PlayfabLogin : MonoBehaviour
         }
     }
 
-    #region ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
+    #region ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–
     public void InitPlayer()
     {
         var request = new UpdateUserDataRequest()
@@ -185,7 +180,7 @@ public class PlayfabLogin : MonoBehaviour
             Data = new Dictionary<string, string>
             {
                 {"Name", inputName.text},
-                {"Image","–‚–@g‚¢" },
+                {"Image","é­”æ³•ä½¿ã„" },
                 {"Exp",userExp},
                 {"Rank",userRank}
             }
@@ -194,8 +189,7 @@ public class PlayfabLogin : MonoBehaviour
         PlayFabClientAPI.UpdateUserData(request
             , result =>
             {
-                Debug.Log("ƒvƒŒƒCƒ„[‚Ì‰Šú‰»Š®—¹");
-                //UpdateUserTitleDisplayName();
+                Debug.Log("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–å®Œäº†");
                 nameInput.SetActive(false);
                 Inventry.GetCatalogData("main");
                 Menu.SetActive(true);
@@ -213,17 +207,17 @@ public class PlayfabLogin : MonoBehaviour
         {
             Data = new Dictionary<string, string>
             {
-                {"Exp","‚O" },
-                {"Rank","‚P" },
+                {"Exp","ï¼" },
+                {"Rank","ï¼‘" },
                 {"Name","" },
-                {"Image","ƒXƒLƒ“1" },
+                {"Image","ã‚¹ã‚­ãƒ³1" },
             }
         };
 
         PlayFabClientAPI.UpdateUserData(request
             , result =>
             {
-                Debug.Log("ƒvƒŒƒCƒ„[‚Ì‰Šú‰»Š®—¹");
+                Debug.Log("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–å®Œäº†");
                 nameInput.SetActive(false);
                 Menu.SetActive(true);
                 LoginButton.SetActive(false);
@@ -235,7 +229,7 @@ public class PlayfabLogin : MonoBehaviour
             }, error => Debug.LogError(error.GenerateErrorReport()));
     }
 
-    //ƒAƒJƒEƒ“ƒgì¬‚ÉŒÄ‚Ño‚·
+    //ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆæ™‚ã«å‘¼ã³å‡ºã™
     public void InputComplete()
     {
         PlayFabInitPlayer();
@@ -243,7 +237,7 @@ public class PlayfabLogin : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Šù‚ÉƒƒOƒCƒ“‚µ‚Ä‚¢‚é‚©‚ÌŠm”F
+        //æ—¢ã«ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ã‚‹ã‹ã®ç¢ºèª
         if (GameManager.Instance.OnLogin)
         {
             LoginButton.SetActive(true);
@@ -252,6 +246,7 @@ public class PlayfabLogin : MonoBehaviour
         }
         else
         {
+            //UIç­‰è¡¨ç¤ºã—ã¦ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã¨ã‚·ãƒ§ãƒƒãƒ—ã®æƒ…å ±ã‚’å–å¾—
             LoginButton.SetActive(false);
             Menu.SetActive(true);
             Menu.SetActive(true);
