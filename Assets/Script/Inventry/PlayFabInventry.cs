@@ -10,12 +10,12 @@ using TMPro;
 public class PlayFabInventry : MonoBehaviour
 {
     public static PlayFabInventry Instance;
-    public List<Item> userInventry = new List<Item>();//ƒvƒŒƒCƒ„[‚ÌƒCƒ“ƒxƒ“ƒgƒŠƒŠƒXƒg
-    public List<CatalogItem> CatalogItems { get; private set; }//ƒT[ƒo[‚É‚ ‚éƒAƒCƒeƒ€î•ñ
-    private int Inventorycount = 0;//ƒCƒ“ƒxƒ“ƒgƒŠ‚É‚ ‚éƒAƒCƒeƒ€‚ÌŒÂ”
-    private int nowInventoryCount = 0;//æ“¾‚µI‚í‚Á‚½ƒAƒCƒeƒ€‚Ì”
-    public Inventory Inventory;//ƒCƒ“ƒxƒ“ƒgƒŠ
-    [SerializeField] private TMP_Text coinText;//ƒQ[ƒ€“à’Ê‰İ‚Ì•\¦
+    public List<Item> userInventry = new List<Item>();//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªãƒªã‚¹ãƒˆ
+    public List<CatalogItem> CatalogItems { get; private set; }//ã‚µãƒ¼ãƒãƒ¼ã«ã‚ã‚‹ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±
+    private int Inventorycount = 0;//ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã«ã‚ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®å€‹æ•°
+    private int nowInventoryCount = 0;//å–å¾—ã—çµ‚ã‚ã£ãŸã‚¢ã‚¤ãƒ†ãƒ ã®æ•°
+    public Inventory Inventory;//ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒª
+    [SerializeField] private TMP_Text coinText;//ã‚²ãƒ¼ãƒ å†…é€šè²¨ã®è¡¨ç¤º
 
     public void Awake()
     {
@@ -29,7 +29,7 @@ public class PlayFabInventry : MonoBehaviour
         
     }
 
-    //ƒT[ƒo[“à‚É‚ ‚éƒAƒCƒeƒ€‚Ìî•ñ‚Ìæ“¾
+    //ã‚µãƒ¼ãƒãƒ¼å†…ã«ã‚ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã®å–å¾—
     public void GetCatalogData(string catalogVersion)
     {
         PlayFabClientAPI.GetCatalogItems(new GetCatalogItemsRequest()
@@ -38,7 +38,7 @@ public class PlayFabInventry : MonoBehaviour
         }
         , result =>
         {
-            Debug.Log("ƒJƒ^ƒƒOƒf[ƒ^æ“¾¬Œ÷");
+            Debug.Log("ã‚«ã‚¿ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿å–å¾—æˆåŠŸ");
             CatalogItems = result.Catalog;
 
             GetUserInventory();
@@ -48,10 +48,10 @@ public class PlayFabInventry : MonoBehaviour
             Debug.Log(error.GenerateErrorReport());
         });
     }
-    //ƒCƒ“ƒxƒ“ƒgƒŠ‚Ìî•ñ‚ğæ“¾
+    //ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®æƒ…å ±ã‚’å–å¾—
     public void GetUserInventory()
     {
-        //ƒCƒ“ƒxƒ“ƒgƒŠUI‚Ì’†g‚ğ‰Šú‰»
+        //ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªUIã®ä¸­èº«ã‚’åˆæœŸåŒ–
         Inventory.AllClear();
         userInventry.Clear();
         nowInventoryCount = 0;
@@ -60,14 +60,14 @@ public class PlayFabInventry : MonoBehaviour
         {
         }, result =>
          {
-             Debug.Log($"ƒCƒ“ƒxƒ“ƒgƒŠ‚Ìî•ñ‚Ìæ“¾‚É¬Œ÷ : ƒCƒ“ƒxƒ“ƒgƒŠ‚É“ü‚Á‚Ä‚¢‚éƒAƒCƒeƒ€” {result.Inventory.Count}ŒÂ");
+             Debug.Log($"ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®æƒ…å ±ã®å–å¾—ã«æˆåŠŸ : ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã«å…¥ã£ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ æ•° {result.Inventory.Count}å€‹");
              Inventorycount = result.Inventory.Count;
              Dictionary<string, int> itemCounts = new Dictionary<string, int>();
              foreach (ItemInstance item in result.Inventory)
              {
                  string itemId = item.DisplayName;
                  Debug.Log($"ID : {item.ItemId}, Name : {item.DisplayName}, ItemInstanceId : {item.ItemInstanceId}");
-                 //“¯‚¶ƒAƒCƒeƒ€‚ª•¡”ŒÂ‚ ‚é‚©‚Ç‚¤‚©
+                 //åŒã˜ã‚¢ã‚¤ãƒ†ãƒ ãŒè¤‡æ•°å€‹ã‚ã‚‹ã‹ã©ã†ã‹
                  if (itemCounts.ContainsKey(itemId))
                  {
                      itemCounts[itemId]++;
@@ -80,33 +80,33 @@ public class PlayFabInventry : MonoBehaviour
                  GetItemDescription(item.ItemId,item.DisplayName,item.ItemInstanceId,itemCounts[itemId]);
             }
              string currencyInfo = "\n";
-             //ƒQ[ƒ€“à’Ê‰İ‚Ìæ“¾
+             //ã‚²ãƒ¼ãƒ å†…é€šè²¨ã®å–å¾—
              foreach (var virtualCurrency in result.VirtualCurrency)
              {
-                 Debug.Log($"‰¼‘z’Ê‰İ{virtualCurrency.Key} : {virtualCurrency.Value}");
+                 Debug.Log($"ä»®æƒ³é€šè²¨{virtualCurrency.Key} : {virtualCurrency.Value}");
                  currencyInfo = $"{virtualCurrency.Key}: {virtualCurrency.Value}\n";
              }
                  coinText.text = currencyInfo;
 
          }, error =>
          {
-             Debug.LogError($"ƒCƒ“ƒxƒ“ƒgƒŠ‚Ìî•ñ‚Ìæ“¾‚É¸”s");
+             Debug.LogError($"ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®æƒ…å ±ã®å–å¾—ã«å¤±æ•—");
          });
     }
 
     private void GetItemDescription(string itemId,string ItemName, string itemInstanceId,int itemCounts)
     {
-            // ƒAƒCƒeƒ€‚ÌƒJƒ^ƒƒOî•ñ‚ğæ“¾‚·‚éƒŠƒNƒGƒXƒg‚ğì¬
+            // ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚«ã‚¿ãƒ­ã‚°æƒ…å ±ã‚’å–å¾—ã™ã‚‹ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ä½œæˆ
             CatalogItem targetItem = CatalogItems.Find(item => item.ItemId == itemId);
-            // PlayFabƒNƒ‰ƒCƒAƒ“ƒg‚ÅƒŠƒNƒGƒXƒg‚ğÀs
+            // PlayFabã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã§ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’å®Ÿè¡Œ
 
             if (targetItem != null)
             {
-                // ƒAƒCƒeƒ€‚Ìà–¾•¶‚ğæ“¾‚µ‚Ä•\¦
+                // ã‚¢ã‚¤ãƒ†ãƒ ã®èª¬æ˜æ–‡ã‚’å–å¾—ã—ã¦è¡¨ç¤º
                 string description = targetItem.Description;
                 Debug.Log("Item Description: " + description);
 
-                // ƒAƒCƒeƒ€‚Ìî•ñ‚ğ“n‚·
+                // ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’æ¸¡ã™
                 Find(itemId, ItemName, itemInstanceId, itemCounts, description);
             }
             else
@@ -117,14 +117,14 @@ public class PlayFabInventry : MonoBehaviour
 
     public  void Find(string itemName,string itemDisplayName,string itemID,int itemCount,string Descriotion)
     {
-        //AllItems‚Ì’†‚©‚çˆê’v‚·‚é‚à‚Ì‚ğ’T‚·
+        //AllItemsã®ä¸­ã‹ã‚‰ä¸€è‡´ã™ã‚‹ã‚‚ã®ã‚’æ¢ã™
         var matchingItem = ItemList.Instance.allItems.Find(item => item.name == itemDisplayName);
         Debug.Log("t:" + itemName);
         if (matchingItem == null)
         {
-            throw new System.IO.FileNotFoundException("Œ©‚Â‚©‚è‚Ü‚¹‚ñ‚Å‚µ‚½");
+            throw new System.IO.FileNotFoundException("è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸ");
         }
-        //ƒAƒCƒeƒ€‚Ìî•ñ‚ğ“n‚·
+        //ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’æ¸¡ã™
         var obj = matchingItem;
         Debug.Log(obj.name);
         obj.ItemID = itemID;
@@ -134,17 +134,17 @@ public class PlayFabInventry : MonoBehaviour
 
         userInventry.Add(obj);
         nowInventoryCount++;
-        Debug.Log("Œ»İ‚Ì”:" + nowInventoryCount);
+        Debug.Log("ç¾åœ¨ã®æ•°:" + nowInventoryCount);
 
-        //ƒCƒ“ƒxƒ“ƒgƒŠ‚Ì’†g‚ğ‘S‚Ä‚Ìæ“¾‚µ‚½‚çÀs
+        //ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®ä¸­èº«ã‚’å…¨ã¦ã®å–å¾—ã—ãŸã‚‰å®Ÿè¡Œ
         if (nowInventoryCount == Inventorycount)
         {
-            Debug.Log("‘S‚Äæ“¾Š®—¹I");
+            Debug.Log("å…¨ã¦å–å¾—å®Œäº†ï¼");
             Inventory.Add(userInventry);
         }
-        //PlayfabShop.Instance.GetCatalogData("main");
     }
 
+ã€€ã€€//ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®è¡¨ç¤º
     public void OpenInventory()
     {
         var inventory = Instantiate(Inventory.gameObject,Inventory.transform);
