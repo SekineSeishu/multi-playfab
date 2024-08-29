@@ -5,6 +5,7 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -12,6 +13,8 @@ public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner _runner;
     //プレイヤーオブジェクト
     [SerializeField] private GameObject playerPrefab;
+    //
+    [SerializeField] private PlayfabLogin playerData;
     //ロビーキャンバス
     [SerializeField] private Canvas canvas;
     //ロビーのプレイヤーオブジェクトの生成位置リスト
@@ -45,6 +48,7 @@ public class PlayerSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             Transform spawnPosition = playerSpawnPositionList[playerIndex];
             NetworkObject playerObject = _runner.Spawn(playerPrefab, spawnPosition.position, Quaternion.identity, player);
+            playerData.GetPlayerData(playerObject.GetComponent<Player>());
         }
     }
 
