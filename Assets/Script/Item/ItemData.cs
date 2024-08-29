@@ -63,7 +63,7 @@ public class ItemData : MonoBehaviour
             void OnSuccess(UpdateUserDataResult result)
             {
                 Debug.Log("Success");
-                PlayfabLogin.Instance.GetPlayerData();
+                PlayfabLogin.Instance.GetPlayerData(player);
             }
             void OnError(PlayFabError error)
             {
