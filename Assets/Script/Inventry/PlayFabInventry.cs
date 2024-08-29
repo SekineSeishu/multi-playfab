@@ -142,6 +142,7 @@ public class PlayFabInventry : MonoBehaviour
             Debug.Log("‘S‚Äæ“¾Š®—¹I");
             Inventory.Add(userInventry);
         }
+        //PlayfabShop.Instance.GetCatalogData("main");
     }
 
     public void OpenInventory()
