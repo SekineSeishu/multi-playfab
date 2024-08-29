@@ -121,7 +121,7 @@ public class PlayfabShop : MonoBehaviour
             GetShopItems.Add(obj);
             nowItemCount++;
         }
-        else
+        else if (shopItem != null)
         {
             allItemCount--;
         }
