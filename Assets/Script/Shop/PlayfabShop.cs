@@ -113,7 +113,7 @@ public class PlayfabShop : MonoBehaviour
         obj.ShopItemPrice = price;
 
         //インベントリに同じアイテムがないか探す
-        var shopItem = PlayFabInventry.Instance.userInventry.Find(item => item.name == itemName);
+       /* var shopItem = PlayFabInventry.Instance.userInventry.Find(item => item.name == itemName);
         if (shopItem == null)
         {
             //なかったら追加
@@ -128,7 +128,7 @@ public class PlayfabShop : MonoBehaviour
         if (nowItemCount == allItemCount)
         {
             shopItemGrop.Add(GetShopItems);
-        }
+        }*/
     }
 
     public void OpenShop()
