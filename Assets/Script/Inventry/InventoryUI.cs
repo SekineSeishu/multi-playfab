@@ -1,3 +1,4 @@
+using PlayFab.EconomyModels;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     //スロットポジションの親オブジェクト
-    public Transform InventryPanel;
+    public Transform content;
 
     [SerializeField] private GameObject _itemSlot;
 
@@ -19,12 +20,17 @@ public class InventoryUI : MonoBehaviour
     //アイテムスロットの位置オブジェクト
     [SerializeField] private GameObject _slotPositionPrefab;
 
+    private GameObject currentRow;
+    private int itemPreRow = 4;
+    private int currentItemIndex;
+
     //次の段のY値
     private float _nextLevelPositionY = -400;
 
     // Start is called before the first frame update
     void Start()
     {
+        ClearInventory();
         //リストの初期取得
         _slotsPosition = new List<Transform>(_firstSlotsPosition);
     }
@@ -36,11 +42,15 @@ public class InventoryUI : MonoBehaviour
         Debug.Log("UpdateUI");
         for (int i = 0; i < items.Count; i++)
         {
-            GameObject slot = Instantiate(_itemSlot, _slotsPosition[i]);
+            if (currentItemIndex % itemPreRow == 0)
+            {
+                currentRow = Instantiate(_slotPositionPrefab, content);
+            }
+            GameObject slot = Instantiate(_itemSlot, currentRow.transform);
             slot.GetComponent<Slot>().AddItem(items[i]);
-            slotUp(_slotsPosition[i]);
+            //slotUp(_slotsPosition[i]);
             Debug.Log(i);
-            //slotr++;
+            currentItemIndex++;
         }
     }
 
@@ -48,7 +58,7 @@ public class InventoryUI : MonoBehaviour
     private void slotUp(Transform slotPosition)
     {
         //次の段に_slotPositionPrefabを生成する
-        GameObject newslot = Instantiate(_slotPositionPrefab,InventryPanel);
+        GameObject newslot = Instantiate(_slotPositionPrefab,content);
         newslot.transform.position = new Vector3(slotPosition.position.x,
                                                                       slotPosition.position.y + _nextLevelPositionY,
                                                                       slotPosition.position.z);
@@ -58,26 +68,11 @@ public class InventoryUI : MonoBehaviour
     //インベントリリセット
     private void ClearInventory()
     {
-        // _slotsPosition の各位置の子オブジェクトを削除
-        for (int i = 0;i < _slotsPosition.Count;i++)
+        currentItemIndex = 0;
+        foreach (Transform item in content)
         {
-            //初期_slotPositionPrefabは子オブジェクトのみ削除
-            if (i <= _firstSlotsPosition.Count)
-            {
-                foreach(Transform child in _slotsPosition[i])
-                {
-                    Destroy(child.gameObject);
-                }
-            }
-            //追加した_slotPositionPrefabはそれごと削除
-            else
-            {
-                Destroy(_slotsPosition[i].gameObject);
-            }
+            Destroy(item.gameObject);
         }
-        //リストの初期化
-        _slotsPosition.Clear();
-        _slotsPosition = new List<Transform>(_firstSlotsPosition);
     }
 
 }
